@@ -354,6 +354,113 @@ const messages = {
       loginHistory: 'Login history',
       comingSoon: 'Feature coming soon',
     },
+    landing: {
+      hero: {
+        badge: 'Now in beta',
+        titleLine1: 'Your next match is',
+        titleLine2: 'one tap away.',
+        subtitle: 'Find games nearby, create events, chat with teammates, and build a reputation that follows you across every sport.',
+        cta: {
+          register: 'Get started free',
+          login: 'Sign in',
+        },
+        scrollHint: 'Explore',
+      },
+      features: {
+        title: 'Everything you need to play.',
+        subtitle: 'Tools built for athletes, not spreadsheets.',
+        items: {
+          find: {
+            title: 'Find nearby games',
+            desc: 'Discover matches happening around you right now. Filter by sport, level, or time.',
+          },
+          create: {
+            title: 'Create events',
+            desc: 'Organize public or private games in seconds. Set the sport, place, and schedule.',
+          },
+          chat: {
+            title: 'In-match chat',
+            desc: 'Coordinate everything before you arrive. Group chats for every event.',
+          },
+          profile: {
+            title: 'Athlete profile',
+            desc: 'Build your identity. Show your sports, track your history, earn trust.',
+          },
+          ratings: {
+            title: 'Peer ratings',
+            desc: 'Rate teammates and get rated. Reliability and fair play matter here.',
+          },
+          sports: {
+            title: 'Multiple sports',
+            desc: 'Football, tennis, volleyball, running, and many more. Your feed adapts to you.',
+          },
+        },
+      },
+      comingSoon: {
+        badge: 'Coming soon',
+        title: 'The next level is being built.',
+        subtitle: 'Expanding SportConnect for everyone — athletes who want to grow, and businesses ready to scale.',
+        athletes: {
+          title: 'For athletes',
+          items: {
+            tournaments: {
+              label: 'Ranked tournaments',
+              desc: 'Join structured competitions and climb regional leaderboards.',
+            },
+            coach: {
+              label: 'Coach mode',
+              desc: 'Connect with certified coaches and track your progress over time.',
+            },
+            stats: {
+              label: 'Performance stats',
+              desc: 'Deep insights: pace, distance, wins, and consistency trends.',
+            },
+            gamification: {
+              label: 'Achievements & badges',
+              desc: 'Earn rewards for reliability, fair play, and personal milestones.',
+            },
+            training: {
+              label: 'Training plans',
+              desc: 'Follow sport-specific programs tailored to your level and goals.',
+            },
+          },
+        },
+        businesses: {
+          title: 'For businesses',
+          items: {
+            courts: {
+              label: 'Court management',
+              desc: 'Manage multiple courts, schedules, and real-time availability.',
+            },
+            booking: {
+              label: 'Online booking',
+              desc: 'Let players book directly from their SportConnect feed.',
+            },
+            analytics: {
+              label: 'Business analytics',
+              desc: 'Understand occupancy, peak times, and player demographics.',
+            },
+            visibility: {
+              label: 'Promoted visibility',
+              desc: 'Reach thousands of active players searching for nearby games.',
+            },
+            team: {
+              label: 'Staff management',
+              desc: 'Assign roles, manage instructors, and coordinate your team.',
+            },
+          },
+        },
+      },
+      finalCta: {
+        title: 'Ready to play?',
+        titleAccent: 'Join SportConnect today.',
+        subtitle: 'Free to use. No credit card required. Start finding games in minutes.',
+        cta: 'Create your profile',
+      },
+      footer: {
+        tagline: '© 2026 SportConnect. Built for athletes, by athletes.',
+      },
+    },
   },
   'pt-BR': {
     app: {
@@ -702,6 +809,113 @@ const messages = {
       activeSessions: 'Sessões ativas',
       loginHistory: 'Histórico de login',
       comingSoon: 'Funcionalidade em breve',
+    },
+    landing: {
+      hero: {
+        badge: 'Agora em beta',
+        titleLine1: 'Sua próxima partida está',
+        titleLine2: 'a um toque de distância.',
+        subtitle: 'Encontre jogos perto de você, crie eventos, converse com seus times e construa uma reputação que te acompanha em todos os esportes.',
+        cta: {
+          register: 'Começar grátis',
+          login: 'Entrar',
+        },
+        scrollHint: 'Explorar',
+      },
+      features: {
+        title: 'Tudo que você precisa para jogar.',
+        subtitle: 'Ferramentas feitas para atletas, não para planilhas.',
+        items: {
+          find: {
+            title: 'Encontre jogos perto',
+            desc: 'Descubra partidas acontecendo ao seu redor agora. Filtre por esporte, nível ou horário.',
+          },
+          create: {
+            title: 'Crie eventos',
+            desc: 'Organize jogos públicos ou privados em segundos. Defina esporte, local e horário.',
+          },
+          chat: {
+            title: 'Chat da partida',
+            desc: 'Coordene tudo antes de chegar. Chat em grupo para cada evento.',
+          },
+          profile: {
+            title: 'Perfil de atleta',
+            desc: 'Construa sua identidade. Mostre seus esportes, acompanhe histórico e ganhe confiança.',
+          },
+          ratings: {
+            title: 'Avaliações entre jogadores',
+            desc: 'Avalie companheiros e seja avaliado. Confiabilidade e fair play valem muito aqui.',
+          },
+          sports: {
+            title: 'Vários esportes',
+            desc: 'Futebol, tênis, vôlei, corrida e muito mais. Seu feed se adapta a você.',
+          },
+        },
+      },
+      comingSoon: {
+        badge: 'Em breve',
+        title: 'O próximo nível está sendo construído.',
+        subtitle: 'Expandindo o SportConnect para todos — atletas que querem evoluir e empresas prontas para crescer.',
+        athletes: {
+          title: 'Para atletas',
+          items: {
+            tournaments: {
+              label: 'Torneios ranqueados',
+              desc: 'Entre em competições estruturadas e suba nos rankings regionais.',
+            },
+            coach: {
+              label: 'Modo treinador',
+              desc: 'Conecte-se com treinadores certificados e acompanhe sua evolução.',
+            },
+            stats: {
+              label: 'Estatísticas de desempenho',
+              desc: 'Insights profundos: ritmo, distância, vitórias e tendências de consistência.',
+            },
+            gamification: {
+              label: 'Conquistas e selos',
+              desc: 'Ganhe recompensas por confiabilidade, fair play e marcos pessoais.',
+            },
+            training: {
+              label: 'Planos de treino',
+              desc: 'Siga programas específicos por esporte adaptados ao seu nível e metas.',
+            },
+          },
+        },
+        businesses: {
+          title: 'Para empresas',
+          items: {
+            courts: {
+              label: 'Gestão de quadras',
+              desc: 'Gerencie múltiplas quadras, horários e disponibilidade em tempo real.',
+            },
+            booking: {
+              label: 'Reserva online',
+              desc: 'Deixe jogadores reservar direto pelo feed do SportConnect.',
+            },
+            analytics: {
+              label: 'Analytics de negócio',
+              desc: 'Entenda ocupação, horários de pico e perfil dos jogadores.',
+            },
+            visibility: {
+              label: 'Visibilidade promovida',
+              desc: 'Alcance milhares de jogadores ativos buscando jogos próximos.',
+            },
+            team: {
+              label: 'Gestão de equipe',
+              desc: 'Atribua funções, gerencie instrutores e coordene seu time.',
+            },
+          },
+        },
+      },
+      finalCta: {
+        title: 'Pronto para jogar?',
+        titleAccent: 'Entre no SportConnect hoje.',
+        subtitle: 'Grátis para usar. Sem cartão de crédito. Comece a encontrar jogos em minutos.',
+        cta: 'Criar meu perfil',
+      },
+      footer: {
+        tagline: '© 2026 SportConnect. Feito por atletas, para atletas.',
+      },
     },
   },
 }

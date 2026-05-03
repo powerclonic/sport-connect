@@ -11,6 +11,7 @@ import ChatPage from '@/pages/chat.vue'
 import CreateEventPage from '@/pages/create-event.vue'
 import FeedPage from '@/pages/feed.vue'
 import Index from '@/pages/index.vue'
+import LandingPage from '@/pages/landing.vue'
 import LoginPage from '@/pages/login.vue'
 import NotFoundPage from '@/pages/not-found.vue'
 import NotificationsPage from '@/pages/notifications.vue'
@@ -30,7 +31,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/welcome',
+      component: LandingPage,
     },
     {
       path: '/welcome',
