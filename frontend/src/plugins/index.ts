@@ -15,7 +15,7 @@ import vuetify from './vuetify'
 
 const pinia = createPinia()
 
-export function registerPlugins (app: App) {
+export async function registerPlugins (app: App) {
   app.use(pinia)
   app.use(vuetify)
   app.use(i18n)
