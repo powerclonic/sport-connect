@@ -26,7 +26,10 @@ services:
   backend:
     build:
       context: ./backend
-    command: flask --app wsgi run --host=0.0.0.0 --port=5000
+    # Run migrations then start dev server (hot-reload via uv run)
+    command: >
+      sh -c "uv run alembic upgrade head &&
+             uv run fastapi dev app/main.py --host 0.0.0.0 --port 5000"
     env_file:
       - .env
     environment:
@@ -42,6 +45,12 @@ services:
       - "5000:5000"
     volumes:
       - ./backend:/app
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   frontend:
     build:
