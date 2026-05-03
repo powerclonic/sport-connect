@@ -26,6 +26,7 @@ from app.models.user import User
 from app.redis_client import RedisClient
 from app.schemas.auth import (
     LoginRequest,
+    ProfileUpdateRequest,
     RefreshRequest,
     RegisterRequest,
     TokenResponse,
@@ -112,6 +113,8 @@ def register(
         email=body.email,
         hashed_password=hash_password(body.password),
         display_name=body.display_name,
+        sports_preferences=body.sports,
+        profile_complete=len(body.sports) > 0,
     )
     db.add(user)
     db.commit()
@@ -212,4 +215,19 @@ def logout(
 
 @router.get("/me", response_model=UserPublicResponse)
 def get_me(current_user: CurrentUserDep) -> UserPublicResponse:
+    return UserPublicResponse.model_validate(current_user)
+
+
+@router.put("/profile", response_model=UserPublicResponse)
+def update_profile(
+    body: ProfileUpdateRequest,
+    current_user: CurrentUserDep,
+    db: DBSession,
+) -> UserPublicResponse:
+    if body.display_name is not None:
+        current_user.display_name = body.display_name
+    current_user.sports_preferences = body.sports_preferences
+    current_user.profile_complete = True
+    db.commit()
+    db.refresh(current_user)
     return UserPublicResponse.model_validate(current_user)
