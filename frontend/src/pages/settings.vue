@@ -41,8 +41,10 @@
       block
       class="!normal-case !font-semibold [font-family:var(--font-body)]"
       color="error"
+      prepend-icon="mdi-logout"
       rounded="pill"
       variant="outlined"
+      @click="handleSignOut"
     >
       {{ t('common.signOut') }}
     </v-btn>
@@ -51,13 +53,22 @@
 
 <script setup lang="ts">
   import { useI18n } from 'vue-i18n'
+  import { useRouter } from 'vue-router'
   import SettingsMenuRow from '@/components/settings/SettingsMenuRow.vue'
   import SettingsSectionCard from '@/components/settings/SettingsSectionCard.vue'
   import AppPageIntro from '@/components/shared/AppPageIntro.vue'
   import AppSelectGroup from '@/components/shared/AppSelectGroup.vue'
   import { setLocale, type SupportedLocale } from '@/plugins/i18n'
+  import { useAuthStore } from '@/stores/auth'
 
   const { t, locale } = useI18n()
+  const router = useRouter()
+  const authStore = useAuthStore()
+
+  async function handleSignOut () {
+    await authStore.logout()
+    router.push('/')
+  }
 
   function changeLocale (nextLocale: string) {
     const normalizedLocale: SupportedLocale = nextLocale === 'pt-BR' ? 'pt-BR' : 'en'

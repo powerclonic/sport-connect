@@ -117,6 +117,7 @@
   import { useI18n } from 'vue-i18n'
   import { useRouter } from 'vue-router'
   import { useAppStore } from '@/stores/app'
+  import { useAuthStore } from '@/stores/auth'
   import type { OrganizerProfile } from '@/types/feed'
 
   const props = withDefaults(defineProps<{
@@ -130,11 +131,16 @@
   const { t } = useI18n()
   const router = useRouter()
   const appStore = useAppStore()
+  const authStore = useAuthStore()
   const isExternalProfile = computed(() => props.profile !== null)
 
-  const displayAvatar = computed(() => props.profile?.image ?? appStore.avatarUrl)
-  const displayName = computed(() => props.profile?.name ?? 'Alex Mercer')
-  const displayLocation = computed(() => props.profile?.location ?? 'Portland, OR')
+  const displayAvatar = computed(() =>
+    props.profile?.image ?? authStore.user?.avatar_url ?? appStore.avatarUrl,
+  )
+  const displayName = computed(() =>
+    props.profile?.name ?? authStore.user?.display_name ?? authStore.user?.email ?? 'Athlete',
+  )
+  const displayLocation = computed(() => props.profile?.location ?? '')
   const displayGamesPlayed = computed(() => props.profile?.gamesPlayed ?? 142)
   const displayRating = computed(() => props.profile?.rating ?? appStore.averageRating.toFixed(1))
   const displayReliability = computed(() => props.profile?.reliability ?? '-')

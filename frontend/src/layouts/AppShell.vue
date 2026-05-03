@@ -157,6 +157,20 @@
         <div class="profile-sheet__content">
           <ProfileSummaryCard variant="sheet" />
         </div>
+
+        <div class="profile-sheet__footer">
+          <v-btn
+            block
+            class="!normal-case !font-semibold [font-family:var(--font-body)]"
+            color="error"
+            prepend-icon="mdi-logout"
+            rounded="pill"
+            variant="outlined"
+            @click="signOut"
+          >
+            {{ t('common.signOut') }}
+          </v-btn>
+        </div>
       </section>
     </transition>
 
@@ -231,6 +245,7 @@
   import ProfileSummaryCard from '@/components/profile/ProfileSummaryCard.vue'
   import AppBrandMark from '@/components/shared/AppBrandMark.vue'
   import { useFeedCatalog } from '@/composables/feed/useFeedCatalog'
+  import { useAuthStore } from '@/stores/auth'
   import {
     applyDocumentColorScheme,
     getStoredThemeMode,
@@ -242,6 +257,7 @@
   const { t, locale } = useI18n()
   const route = useRoute()
   const router = useRouter()
+  const authStore = useAuthStore()
   const display = useDisplay()
   const theme = useTheme()
   const { getOrganizerById } = useFeedCatalog()
@@ -255,13 +271,19 @@
 
   const isTrayOpen = computed(() => activeTray.value !== null)
 
-  const trayTitle = computed(() => {
-    return t('profile.title')
-  })
+  const trayTitle = computed(() =>
+    authStore.user?.display_name ?? authStore.user?.email ?? t('profile.title'),
+  )
 
-  const traySubtitle = computed(() => {
-    return t('profile.subtitle')
-  })
+  const traySubtitle = computed(() =>
+    authStore.user?.email ?? t('profile.subtitle'),
+  )
+
+  async function signOut () {
+    closeTray()
+    await authStore.logout()
+    router.push('/')
+  }
 
   const eventTrayTitle = computed(() => selectedEvent.value?.title ?? t('event.title'))
 
@@ -626,7 +648,12 @@
   .organizer-sheet__content {
   flex: 1;
   overflow-y: auto;
-  padding: 14px 16px calc(22px + env(safe-area-inset-bottom));
+  padding: 14px 16px 12px;
+}
+
+.profile-sheet__footer {
+  padding: 12px 16px calc(16px + env(safe-area-inset-bottom));
+  border-top: 1px solid color-mix(in srgb, rgb(var(--v-theme-on-surface)) 10%, transparent);
 }
 
 .tray-slide-enter-active,
