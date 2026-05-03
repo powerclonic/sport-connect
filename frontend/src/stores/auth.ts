@@ -55,10 +55,16 @@ export const useAuthStore = defineStore('auth', () => {
     email: string,
     password: string,
     displayName?: string,
+    sports?: string[],
   ): Promise<void> {
     isLoading.value = true
     try {
-      const tokens = await authApi.register({ email, password, display_name: displayName })
+      const tokens = await authApi.register({
+        email,
+        password,
+        display_name: displayName,
+        sports: sports ?? [],
+      })
       _setTokens(tokens)
       user.value = await authApi.me()
     } finally {
@@ -115,6 +121,18 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = await authApi.me()
   }
 
+  async function updateProfile(displayName: string | null, sports: string[]): Promise<void> {
+    isLoading.value = true
+    try {
+      user.value = await authApi.updateProfile({
+        display_name: displayName,
+        sports_preferences: sports,
+      })
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   return {
     user,
     accessToken,
@@ -126,5 +144,6 @@ export const useAuthStore = defineStore('auth', () => {
     refresh,
     initialize,
     hydrateFromOAuth,
+    updateProfile,
   }
 })

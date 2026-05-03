@@ -51,7 +51,11 @@
       await authStore.hydrateFromOAuth({ access_token: accessToken, refresh_token: refreshToken })
       // Clear tokens from URL before navigating
       history.replaceState(null, '', window.location.pathname)
-      router.push('/app/feed')
+      if (!authStore.user?.profile_complete) {
+        router.push('/complete-profile')
+      } else {
+        router.push('/app/feed')
+      }
     } catch {
       errorMessage.value = t('auth.errors.serverError')
     }

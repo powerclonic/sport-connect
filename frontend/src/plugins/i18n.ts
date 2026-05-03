@@ -102,6 +102,7 @@ const messages = {
         yoga: 'Yoga',
         beachTennis: 'Beach Tennis',
       },
+      orContinueWith: 'Or continue with',
       errors: {
         invalidCredentials: 'Invalid email or password.',
         emailTaken: 'An account with this email already exists.',
@@ -109,6 +110,13 @@ const messages = {
         serverError: 'Something went wrong. Please try again.',
         networkError: 'Cannot connect to server. Check your connection.',
         weakPassword: 'Password must include uppercase, lowercase and a number.',
+      },
+      completeProfile: {
+        title: 'Almost there!',
+        subtitle: 'Confirm your name and pick at least 3 sports to personalize your feed.',
+        submit: 'Get started',
+        showMore: 'More sports',
+        showLess: 'Show less',
       },
     },
     feed: {
@@ -371,6 +379,7 @@ const messages = {
         cta: {
           register: 'Get started free',
           login: 'Sign in',
+          hasAccount: 'Already have an account?',
         },
         scrollHint: 'Explore',
       },
@@ -566,6 +575,7 @@ const messages = {
         yoga: 'Yoga',
         beachTennis: 'Beach Tennis',
       },
+      orContinueWith: 'Ou continuar com',
       errors: {
         invalidCredentials: 'E-mail ou senha inválidos.',
         emailTaken: 'Já existe uma conta com este e-mail.',
@@ -573,6 +583,13 @@ const messages = {
         serverError: 'Algo deu errado. Tente novamente.',
         networkError: 'Não foi possível conectar ao servidor. Verifique sua conexão.',
         weakPassword: 'A senha deve ter letras maiúsculas, minúsculas e um número.',
+      },
+      completeProfile: {
+        title: 'Quase lá!',
+        subtitle: 'Confirme seu nome e escolha pelo menos 3 esportes para personalizar seu feed.',
+        submit: 'Começar',
+        showMore: 'Mais esportes',
+        showLess: 'Ver menos',
       },
     },
     feed: {
@@ -835,6 +852,7 @@ const messages = {
         cta: {
           register: 'Começar grátis',
           login: 'Entrar',
+          hasAccount: 'Já tem uma conta?',
         },
         scrollHint: 'Explorar',
       },

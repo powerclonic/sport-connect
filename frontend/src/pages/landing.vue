@@ -72,22 +72,29 @@
           {{ t('landing.hero.subtitle') }}
         </p>
 
-        <div class="flex flex-col items-center gap-4 sm:flex-row">
-          <v-btn-primary
-            color="primary"
-            size="x-large"
-            to="/register"
-          >
-            {{ t('landing.hero.cta.register') }}
-            <v-icon class="ml-1" end icon="mdi-arrow-right" size="20" />
-          </v-btn-primary>
+        <div class="flex flex-col items-center gap-4">
+          <div class="flex flex-col gap-3 sm:flex-row">
+            <v-btn-primary
+              color="primary"
+              size="x-large"
+              to="/register"
+            >
+              {{ t('landing.hero.cta.register') }}
+              <v-icon class="ml-1" end icon="mdi-arrow-right" size="20" />
+            </v-btn-primary>
 
-          <v-btn-secondary
-            size="x-large"
-            to="/login"
-          >
-            {{ t('landing.hero.cta.login') }}
-          </v-btn-secondary>
+            <GoogleOAuthButton size="x-large" />
+          </div>
+
+          <p class="m-0 text-sm text-[rgb(var(--v-theme-on-surface-variant))] [font-family:var(--font-body)]">
+            {{ t('landing.hero.cta.hasAccount') }}
+            <router-link
+              class="font-semibold text-[rgb(var(--v-theme-primary))] hover:underline"
+              to="/login"
+            >
+              {{ t('landing.hero.cta.login') }}
+            </router-link>
+          </p>
         </div>
 
         <!-- Scroll hint -->
@@ -231,13 +238,29 @@
         <p class="mb-10 text-base leading-relaxed text-[rgb(var(--v-theme-on-surface-variant))] [font-family:var(--font-body)]">
           {{ t('landing.finalCta.subtitle') }}
         </p>
-        <v-btn-primary
-          size="x-large"
-          to="/register"
-        >
-          {{ t('landing.finalCta.cta') }}
-          <v-icon class="ml-1" end icon="mdi-arrow-right" size="20" />
-        </v-btn-primary>
+        <div class="flex flex-col items-center gap-4">
+          <div class="flex flex-col gap-3 sm:flex-row">
+            <v-btn-primary
+              size="x-large"
+              to="/register"
+            >
+              {{ t('landing.finalCta.cta') }}
+              <v-icon class="ml-1" end icon="mdi-arrow-right" size="20" />
+            </v-btn-primary>
+
+            <GoogleOAuthButton size="x-large" />
+          </div>
+
+          <p class="m-0 text-sm text-[rgb(var(--v-theme-on-surface-variant))] [font-family:var(--font-body)]">
+            {{ t('landing.hero.cta.hasAccount') }}
+            <router-link
+              class="font-semibold text-[rgb(var(--v-theme-primary))] hover:underline"
+              to="/login"
+            >
+              {{ t('landing.hero.cta.login') }}
+            </router-link>
+          </p>
+        </div>
       </section>
 
       <!-- Footer -->
@@ -260,6 +283,7 @@
   import { useTheme } from 'vuetify'
   import AppBrandMark from '@/components/shared/AppBrandMark.vue'
   import AppSelectGroup from '@/components/shared/AppSelectGroup.vue'
+  import GoogleOAuthButton from '@/components/auth/GoogleOAuthButton.vue'
   import { setLocale, type SupportedLocale } from '@/plugins/i18n'
   import {
     applyDocumentColorScheme,

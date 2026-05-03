@@ -14,6 +14,7 @@ declare module 'vue-router' {
 import { createRouter, createWebHistory } from 'vue-router'
 import AppShell from '@/layouts/AppShell.vue'
 import ChatEventPage from '@/pages/chat-event.vue'
+import CompleteProfilePage from '@/pages/complete-profile.vue'
 import OAuthCallbackPage from '@/pages/oauth-callback.vue'
 import ChatPage from '@/pages/chat.vue'
 import CreateEventPage from '@/pages/create-event.vue'
@@ -59,6 +60,10 @@ const router = createRouter({
     {
       path: '/oauth/callback',
       component: OAuthCallbackPage,
+    },
+    {
+      path: '/complete-profile',
+      component: CompleteProfilePage,
     },
     {
       path: '/app',

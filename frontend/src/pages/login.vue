@@ -1,10 +1,10 @@
 <template>
   <AuthShell card-max-width-class="max-w-lg">
-    <h1 class="m-0 text-3xl leading-tight text-[#191c1e] [font-family:var(--font-heading)]">
+    <h1 class="m-0 text-3xl leading-tight text-[rgb(var(--v-theme-on-surface))] [font-family:var(--font-heading)]">
       {{ t('auth.login.title') }}
     </h1>
 
-    <p class="mt-2 mb-0 text-base leading-relaxed text-[#565e74] [font-family:var(--font-body)]">
+    <p class="mt-2 mb-0 text-base leading-relaxed text-[rgb(var(--v-theme-on-surface-variant))] [font-family:var(--font-body)]">
       {{ t('auth.login.subtitle') }}
     </p>
 
@@ -60,11 +60,26 @@
       >
         {{ t('auth.login.submit') }}
       </v-btn-primary>
+
+      <div class="relative mt-3 flex items-center gap-3">
+        <div class="h-px flex-1 bg-[rgba(var(--v-theme-on-surface),0.12)]" />
+        <span class="text-xs text-[rgb(var(--v-theme-on-surface-variant))] [font-family:var(--font-body)]">
+          {{ t('auth.orContinueWith') }}
+        </span>
+        <div class="h-px flex-1 bg-[rgba(var(--v-theme-on-surface),0.12)]" />
+      </div>
+
+      <GoogleOAuthButton
+        block
+        class="!w-full"
+        min-height="48"
+        @error="errorMessage = $event"
+      />
     </v-form>
 
-    <p class="mt-4 mb-0 text-center text-sm text-[#5a4136] [font-family:var(--font-body)]">
+    <p class="mt-4 mb-0 text-center text-sm text-[rgb(var(--v-theme-on-surface-variant))] [font-family:var(--font-body)]">
       {{ t('auth.login.noAccount') }}
-      <router-link class="ml-1.5 font-bold text-[#a04100] hover:underline" to="/register">
+      <router-link class="ml-1.5 font-bold text-[rgb(var(--v-theme-primary-darken-1))] hover:underline" to="/register">
         {{ t('auth.login.createAccount') }}
       </router-link>
     </p>
@@ -76,6 +91,7 @@
   import { useI18n } from 'vue-i18n'
   import { useRoute, useRouter } from 'vue-router'
   import AuthShell from '@/components/auth/AuthShell.vue'
+  import GoogleOAuthButton from '@/components/auth/GoogleOAuthButton.vue'
   import { ApiError } from '@/api/client'
   import { useAuthStore } from '@/stores/auth'
 

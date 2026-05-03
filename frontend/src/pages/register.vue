@@ -8,53 +8,22 @@
         />
       </div>
 
-      <div class="mt-2.5 grid gap-2" :style="{ gridTemplateColumns: `repeat(${totalSteps}, minmax(0, 1fr))` }">
+      <div class="mt-2.5 grid grid-cols-3 gap-2">
         <div
+          v-for="step in 3"
+          :key="step"
           class="flex items-center justify-center gap-1.5 sm:justify-start"
-          :class="1 <= currentStep ? 'text-[rgb(var(--v-theme-on-surface))]' : 'text-[rgb(var(--v-theme-on-surface-variant))]'"
+          :class="step <= currentStep ? 'text-[rgb(var(--v-theme-on-surface))]' : 'text-[rgb(var(--v-theme-on-surface-variant))]'"
         >
           <span
             class="inline-flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold [font-family:var(--font-body)]"
-            :class="1 <= currentStep ? 'bg-[rgba(var(--v-theme-primary),0.18)] text-[rgb(var(--v-theme-primary-darken-1))]' : 'bg-[rgb(var(--v-theme-surface-variant))] text-[rgb(var(--v-theme-on-surface-variant))]'"
+            :class="step <= currentStep ? 'bg-[rgba(var(--v-theme-primary),0.18)] text-[rgb(var(--v-theme-primary-darken-1))]' : 'bg-[rgb(var(--v-theme-surface-variant))] text-[rgb(var(--v-theme-on-surface-variant))]'"
           >
-            1
+            {{ step }}
           </span>
 
           <span class="hidden text-xs leading-tight font-semibold sm:inline [font-family:var(--font-body)]">
-            {{ t('auth.register.steps.account') }}
-          </span>
-        </div>
-
-        <div
-          class="flex items-center justify-center gap-1.5 sm:justify-start"
-          :class="2 <= currentStep ? 'text-[rgb(var(--v-theme-on-surface))]' : 'text-[rgb(var(--v-theme-on-surface-variant))]'"
-        >
-          <span
-            class="inline-flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold [font-family:var(--font-body)]"
-            :class="2 <= currentStep ? 'bg-[rgba(var(--v-theme-primary),0.18)] text-[rgb(var(--v-theme-primary-darken-1))]' : 'bg-[rgb(var(--v-theme-surface-variant))] text-[rgb(var(--v-theme-on-surface-variant))]'"
-          >
-            2
-          </span>
-
-          <span class="hidden text-xs leading-tight font-semibold sm:inline [font-family:var(--font-body)]">
-            {{ t('auth.register.steps.sports') }}
-          </span>
-        </div>
-
-        <div
-          v-if="!isGoogleSignup"
-          class="flex items-center justify-center gap-1.5 sm:justify-start"
-          :class="3 <= currentStep ? 'text-[rgb(var(--v-theme-on-surface))]' : 'text-[rgb(var(--v-theme-on-surface-variant))]'"
-        >
-          <span
-            class="inline-flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold [font-family:var(--font-body)]"
-            :class="3 <= currentStep ? 'bg-[rgba(var(--v-theme-primary),0.18)] text-[rgb(var(--v-theme-primary-darken-1))]' : 'bg-[rgb(var(--v-theme-surface-variant))] text-[rgb(var(--v-theme-on-surface-variant))]'"
-          >
-            3
-          </span>
-
-          <span class="hidden text-xs leading-tight font-semibold sm:inline [font-family:var(--font-body)]">
-            {{ t('auth.register.steps.password') }}
+            {{ t(`auth.register.steps.${['account', 'sports', 'password'][step - 1]}`) }}
           </span>
         </div>
       </div>
@@ -79,7 +48,7 @@
           leave-active-class="pointer-events-none absolute inset-0 w-full transition duration-300 ease-out motion-reduce:transition-none"
           leave-to-class="-translate-y-1.5 scale-[0.998] opacity-0"
         >
-          <div :key="`${currentStep}-${isGoogleSignup}`" ref="stepContentInner" class="grid w-full min-w-0 gap-2.5">
+          <div :key="currentStep" ref="stepContentInner" class="grid w-full min-w-0 gap-2.5">
             <template v-if="currentStep === 1">
               <v-text-field
                 v-model.trim="fullName"
@@ -88,82 +57,29 @@
                 type="text"
               />
 
-              <template v-if="!isGoogleSignup">
-                <v-text-field
-                  v-model.trim="email"
-                  :label="t('auth.register.email')"
-                  :placeholder="t('auth.register.emailPlaceholder')"
-                  type="email"
-                />
+              <v-text-field
+                v-model.trim="email"
+                :label="t('auth.register.email')"
+                :placeholder="t('auth.register.emailPlaceholder')"
+                type="email"
+              />
 
-                <v-btn-secondary
-                  class="mt-2 !h-12 !w-full !text-sm !font-semibold !normal-case [font-family:var(--font-body)]"
-                  :loading="isOAuthLoading"
-                  prepend-icon="mdi-google"
-                  @click="activateGoogleSignup"
-                >
-                  {{ t('auth.register.continueWithGoogle') }}
-                </v-btn-secondary>
-              </template>
+              <div class="relative mt-1 flex items-center gap-3">
+                <div class="h-px flex-1 bg-[rgba(var(--v-theme-on-surface),0.12)]" />
+                <span class="text-xs text-[rgb(var(--v-theme-on-surface-variant))] [font-family:var(--font-body)]">
+                  {{ t('auth.orContinueWith') }}
+                </span>
+                <div class="h-px flex-1 bg-[rgba(var(--v-theme-on-surface),0.12)]" />
+              </div>
 
-              <template v-else>
-                <p class="mt-2 mb-0 text-sm text-[rgb(var(--v-theme-on-surface-variant))] [font-family:var(--font-body)]">
-                  {{ t('auth.register.googleConnected') }}
-                </p>
-
-                <v-btn-ghost
-                  class="mt-0.5 !w-fit !p-0 !text-sm !font-bold !normal-case !text-[rgb(var(--v-theme-primary-darken-1))] [font-family:var(--font-body)]"
-                  size="small"
-                  @click="deactivateGoogleSignup"
-                >
-                  {{ t('auth.register.useEmailInstead') }}
-                </v-btn-ghost>
-              </template>
+              <GoogleOAuthButton class="!w-full" @error="errorMessage = $event" />
             </template>
 
             <template v-else-if="currentStep === 2">
-              <div class="rounded-xl border border-[rgba(var(--v-theme-on-surface),0.12)] bg-[rgb(var(--v-theme-surface-variant))] p-4">
-                <div class="flex items-start justify-between gap-3">
-                  <div class="min-w-0">
-                    <h2 class="m-0 text-xl text-[rgb(var(--v-theme-on-surface))] [font-family:var(--font-heading)]">
-                      {{ t('auth.register.sportsTitle') }}
-                    </h2>
-
-                    <p class="mt-1 mb-0 text-sm text-[rgb(var(--v-theme-on-surface-variant))] [font-family:var(--font-body)]">
-                      {{ t('auth.register.sportsHint') }}
-                    </p>
-                  </div>
-
-                  <span
-                    class="whitespace-nowrap rounded-full bg-[rgba(var(--v-theme-primary),0.18)] px-2.5 py-1.5 text-xs font-semibold text-[rgb(var(--v-theme-primary-darken-1))] [font-family:var(--font-body)]"
-                  >
-                    {{ t('auth.register.selectedCount', selectedSports.length) }}
-                  </span>
-                </div>
-
-                <v-chip-group
-                  class="mt-3"
-                  :model-value="selectedSports"
-                  multiple
-                  @update:model-value="selectedSports = $event"
-                >
-                  <v-chip
-                    v-for="sport in sports"
-                    :key="sport.key"
-                    class="!text-sm !font-semibold [font-family:var(--font-body)]"
-                    color="primary"
-                    filter
-                    rounded="pill"
-                    :value="sport.key"
-                    variant="outlined"
-                  >
-                    {{ sport.label }}
-                  </v-chip>
-                </v-chip-group>
-              </div>
+              <SportsPicker v-model="selectedSports" />
             </template>
 
-            <template v-else-if="!isGoogleSignup">
+            <template v-else>
               <div class="grid gap-2.5 md:grid-cols-2">
                 <v-text-field
                   v-model="password"
@@ -197,7 +113,7 @@
         </v-btn-secondary>
 
         <v-btn-primary
-          v-if="currentStep < totalSteps"
+          v-if="currentStep < 3"
           append-icon="mdi-arrow-right"
           class="!h-14 !w-full !text-base !shadow-[0_10px_26px_rgba(255,107,0,0.35)] disabled:!shadow-none sm:!flex-1 [font-family:var(--font-body)]"
           :disabled="!canGoNext"
@@ -214,7 +130,7 @@
           :loading="authStore.isLoading"
           type="submit"
         >
-          {{ isGoogleSignup ? t('auth.register.submitGoogle') : t('auth.register.submit') }}
+          {{ t('auth.register.submit') }}
         </v-btn-primary>
       </div>
 
@@ -231,9 +147,9 @@
       </v-alert>
     </v-form>
 
-    <p class="mt-4 mb-0 text-center text-sm text-[#5a4136] [font-family:var(--font-body)]">
+    <p class="mt-4 mb-0 text-center text-sm text-[rgb(var(--v-theme-on-surface-variant))] [font-family:var(--font-body)]">
       {{ t('auth.register.hasAccount') }}
-      <router-link class="ml-1.5 font-bold text-[#a04100] hover:underline" to="/login">
+      <router-link class="ml-1.5 font-bold text-[rgb(var(--v-theme-primary-darken-1))] hover:underline" to="/login">
         {{ t('auth.register.signIn') }}
       </router-link>
     </p>
@@ -245,8 +161,9 @@
   import { useI18n } from 'vue-i18n'
   import { useRouter } from 'vue-router'
   import AuthShell from '@/components/auth/AuthShell.vue'
+  import GoogleOAuthButton from '@/components/auth/GoogleOAuthButton.vue'
+  import SportsPicker from '@/components/auth/SportsPicker.vue'
   import { ApiError } from '@/api/client'
-  import { authApi } from '@/api/auth'
   import { useAuthStore } from '@/stores/auth'
 
   const router = useRouter()
@@ -259,37 +176,21 @@
   const confirmPassword = ref('')
   const selectedSports = ref<string[]>([])
   const currentStep = ref(1)
-  const isGoogleSignup = ref(false)
-  const isOAuthLoading = ref(false)
   const errorMessage = ref('')
   const stepContentInner = ref<HTMLElement | null>(null)
   const stepShellHeight = ref('0px')
 
   let stepResizeObserver: ResizeObserver | null = null
 
-  const sports = computed(() => [
-    { key: 'football', label: t('auth.sports.football') },
-    { key: 'volleyball', label: t('auth.sports.volleyball') },
-    { key: 'tennis', label: t('auth.sports.tennis') },
-    { key: 'basketball', label: t('auth.sports.basketball') },
-    { key: 'running', label: t('auth.sports.running') },
-    { key: 'swimming', label: t('auth.sports.swimming') },
-    { key: 'crossfit', label: t('auth.sports.crossfit') },
-    { key: 'yoga', label: t('auth.sports.yoga') },
-    { key: 'beachTennis', label: t('auth.sports.beachTennis') },
-  ])
-
   const passwordsMatch = computed(() => password.value.length > 0 && password.value === confirmPassword.value)
   const showPasswordError = computed(() => confirmPassword.value.length > 0 && !passwordsMatch.value)
 
   const isStepOneValid = computed(() => {
-    if (isGoogleSignup.value) return fullName.value.length >= 3
     const emailIsValid = /^\S+@\S+\.\S+$/.test(email.value)
     return fullName.value.length >= 3 && emailIsValid
   })
 
   const isStepTwoValid = computed(() => selectedSports.value.length >= 3)
-
   const isStepThreeValid = computed(() => password.value.length >= 6 && passwordsMatch.value)
 
   const canGoNext = computed(() => {
@@ -298,61 +199,32 @@
     return false
   })
 
-  const totalSteps = computed(() => (isGoogleSignup.value ? 2 : 3))
+  const canSubmit = computed(() => isStepOneValid.value && isStepTwoValid.value && isStepThreeValid.value)
 
-  const canSubmit = computed(() => {
-    if (isGoogleSignup.value) {
-      return isStepOneValid.value && isStepTwoValid.value
-    }
-    return isStepOneValid.value && isStepTwoValid.value && isStepThreeValid.value
-  })
+  const progressWidth = computed(() => (currentStep.value / 3) * 100)
 
-  const progressWidth = computed(() => {
-    return (currentStep.value / totalSteps.value) * 100
-  })
-
-  function previousStep () {
+  function previousStep() {
     currentStep.value = Math.max(1, currentStep.value - 1)
   }
 
-  function nextStep () {
+  function nextStep() {
     if (!canGoNext.value) return
-    currentStep.value = Math.min(totalSteps.value, currentStep.value + 1)
+    currentStep.value = Math.min(3, currentStep.value + 1)
   }
 
-  function handleSubmit () {
-    if (currentStep.value < totalSteps.value) {
+  function handleSubmit() {
+    if (currentStep.value < 3) {
       nextStep()
       return
     }
     submitRegister()
   }
 
-  async function activateGoogleSignup () {
-    isOAuthLoading.value = true
-    errorMessage.value = ''
-    try {
-      const { authorization_url } = await authApi.getOAuthRedirectUrl('google')
-      window.location.href = authorization_url
-    } catch {
-      errorMessage.value = t('auth.errors.serverError')
-      isOAuthLoading.value = false
-    }
-  }
-
-  function deactivateGoogleSignup () {
-    isGoogleSignup.value = false
-    isOAuthLoading.value = false
-    if (currentStep.value > 1) {
-      currentStep.value = 1
-    }
-  }
-
-  async function submitRegister () {
+  async function submitRegister() {
     if (!canSubmit.value) return
     errorMessage.value = ''
     try {
-      await authStore.register(email.value, password.value, fullName.value || undefined)
+      await authStore.register(email.value, password.value, fullName.value || undefined, selectedSports.value)
       router.push('/app/feed')
     } catch (e) {
       if (e instanceof ApiError) {
@@ -371,21 +243,18 @@
     }
   }
 
-  function syncStepHeight () {
+  function syncStepHeight() {
     if (!stepContentInner.value) return
     stepShellHeight.value = `${stepContentInner.value.scrollHeight}px`
   }
 
-  watch([currentStep, isGoogleSignup], async () => {
+  watch(currentStep, async () => {
     await nextTick()
     syncStepHeight()
   })
 
   watch(stepContentInner, (nextEl, previousEl) => {
-    if (previousEl && stepResizeObserver) {
-      stepResizeObserver.unobserve(previousEl)
-    }
-
+    if (previousEl && stepResizeObserver) stepResizeObserver.unobserve(previousEl)
     if (nextEl && stepResizeObserver) {
       stepResizeObserver.observe(nextEl)
       syncStepHeight()
@@ -396,21 +265,13 @@
     await nextTick()
     syncStepHeight()
 
-    stepResizeObserver = new ResizeObserver(() => {
-      syncStepHeight()
-    })
-
-    if (stepContentInner.value) {
-      stepResizeObserver.observe(stepContentInner.value)
-    }
-
+    stepResizeObserver = new ResizeObserver(() => syncStepHeight())
+    if (stepContentInner.value) stepResizeObserver.observe(stepContentInner.value)
     window.addEventListener('resize', syncStepHeight)
   })
 
   onBeforeUnmount(() => {
-    if (stepResizeObserver && stepContentInner.value) {
-      stepResizeObserver.unobserve(stepContentInner.value)
-    }
+    if (stepResizeObserver && stepContentInner.value) stepResizeObserver.unobserve(stepContentInner.value)
     stepResizeObserver?.disconnect()
     window.removeEventListener('resize', syncStepHeight)
   })
