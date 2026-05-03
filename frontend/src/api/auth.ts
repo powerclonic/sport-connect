@@ -14,17 +14,25 @@ export interface UserPublicResponse {
   display_name: string | null
   avatar_url: string | null
   is_verified: boolean
+  sports_preferences: string[]
+  profile_complete: boolean
 }
 
 export interface RegisterPayload {
   email: string
   password: string
   display_name?: string
+  sports?: string[]
 }
 
 export interface LoginPayload {
   email: string
   password: string
+}
+
+export interface ProfileUpdatePayload {
+  display_name?: string | null
+  sports_preferences: string[]
 }
 
 // ── Auth endpoints ────────────────────────────────────────────────────────────
@@ -44,6 +52,9 @@ export const authApi = {
 
   me: () =>
     api.get<UserPublicResponse>('/auth/me'),
+
+  updateProfile: (payload: ProfileUpdatePayload) =>
+    api.put<UserPublicResponse>('/auth/profile', payload),
 
   getOAuthRedirectUrl: (provider: 'google' | 'facebook') =>
     api.get<{ authorization_url: string }>(`/oauth/${provider}/redirect`, { skipRefresh: true }),
