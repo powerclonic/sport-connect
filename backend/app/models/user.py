@@ -2,6 +2,7 @@ from sqlalchemy import Boolean, Index, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
+from app.models.types import JsonList
 
 
 class User(Base):
@@ -21,6 +22,8 @@ class User(Base):
     avatar_url: Mapped[str | None] = mapped_column(String(512), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     is_verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    sports_preferences: Mapped[list] = mapped_column(JsonList, default=list, nullable=False)
+    profile_complete: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
     # Relationships
     oauth_accounts: Mapped[list["OAuthAccount"]] = relationship(  # noqa: F821

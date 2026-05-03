@@ -7,6 +7,7 @@ class RegisterRequest(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8, max_length=128)
     display_name: str | None = Field(default=None, max_length=100)
+    sports: list[str] = Field(default_factory=list)
 
     @field_validator("password")
     @classmethod
@@ -45,11 +46,18 @@ class TokenResponse(BaseModel):
     token_type: str = "bearer"
 
 
+class ProfileUpdateRequest(BaseModel):
+    display_name: str | None = Field(default=None, max_length=100)
+    sports_preferences: list[str] = Field(default_factory=list)
+
+
 class UserPublicResponse(BaseModel):
     id: str
     email: EmailStr
     display_name: str | None
     avatar_url: str | None
     is_verified: bool
+    sports_preferences: list[str]
+    profile_complete: bool
 
     model_config = {"from_attributes": True}
