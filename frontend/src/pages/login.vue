@@ -37,11 +37,24 @@
         type="password"
       />
 
+      <v-alert
+        v-if="errorMessage"
+        class="mt-1"
+        color="error"
+        density="compact"
+        rounded="lg"
+        type="error"
+        variant="tonal"
+      >
+        {{ errorMessage }}
+      </v-alert>
+
       <v-btn-primary
         append-icon="mdi-arrow-right"
         block
         class="mt-2.5 !text-base !shadow-[0_10px_26px_rgba(255,107,0,0.35)] disabled:!shadow-none [font-family:var(--font-body)]"
         :disabled="!canSubmit"
+        :loading="authStore.isLoading"
         min-height="52"
         type="submit"
       >
@@ -61,19 +74,43 @@
 <script setup lang="ts">
   import { computed, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { useRouter } from 'vue-router'
+  import { useRoute, useRouter } from 'vue-router'
   import AuthShell from '@/components/auth/AuthShell.vue'
+  import { ApiError } from '@/api/client'
+  import { useAuthStore } from '@/stores/auth'
 
   const router = useRouter()
+  const route = useRoute()
   const { t } = useI18n()
+  const authStore = useAuthStore()
 
   const email = ref('')
   const password = ref('')
+  const errorMessage = ref('')
 
-  const canSubmit = computed(() => email.value.length > 4 && password.value.length > 5)
+  const canSubmit = computed(() =>
+    email.value.length > 4 && password.value.length > 5 && !authStore.isLoading,
+  )
 
-  function submitLogin () {
+  async function submitLogin () {
     if (!canSubmit.value) return
-    router.push('/app/feed')
+    errorMessage.value = ''
+    try {
+      await authStore.login(email.value, password.value)
+      const redirect = route.query.redirect as string | undefined
+      router.push(redirect ?? '/app/feed')
+    } catch (e) {
+      if (e instanceof ApiError) {
+        if (e.status === 401 || e.status === 422) {
+          errorMessage.value = t('auth.errors.invalidCredentials')
+        } else if (e.status === 429) {
+          errorMessage.value = t('auth.errors.tooManyAttempts')
+        } else {
+          errorMessage.value = t('auth.errors.serverError')
+        }
+      } else {
+        errorMessage.value = t('auth.errors.networkError')
+      }
+    }
   }
 </script>
