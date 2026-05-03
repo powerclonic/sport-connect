@@ -1,0 +1,13 @@
+{
+  "name": "sport-connect-root",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "postinstall": "npm --prefix frontend ci --include=dev",
+    "build": "npm --prefix frontend ci --include=dev && npm --prefix frontend run build-only",
+    "start": "serve -s frontend/dist -l ${PORT:-3000}"
+  },
+  "dependencies": {
+    "serve": "^14.2.4"
+  }
+}
