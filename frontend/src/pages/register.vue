@@ -98,6 +98,7 @@
 
                 <v-btn-secondary
                   class="mt-2 !h-12 !w-full !text-sm !font-semibold !normal-case [font-family:var(--font-body)]"
+                  :loading="isOAuthLoading"
                   prepend-icon="mdi-google"
                   @click="activateGoogleSignup"
                 >
@@ -209,12 +210,25 @@
           v-else
           append-icon="mdi-arrow-right"
           class="!h-14 !w-full !text-base !shadow-[0_10px_26px_rgba(255,107,0,0.35)] disabled:!shadow-none sm:!flex-1 [font-family:var(--font-body)]"
-          :disabled="!canSubmit"
+          :disabled="!canSubmit || authStore.isLoading"
+          :loading="authStore.isLoading"
           type="submit"
         >
           {{ isGoogleSignup ? t('auth.register.submitGoogle') : t('auth.register.submit') }}
         </v-btn-primary>
       </div>
+
+      <v-alert
+        v-if="errorMessage"
+        class="mt-1"
+        color="error"
+        density="compact"
+        rounded="lg"
+        type="error"
+        variant="tonal"
+      >
+        {{ errorMessage }}
+      </v-alert>
     </v-form>
 
     <p class="mt-4 mb-0 text-center text-sm text-[#5a4136] [font-family:var(--font-body)]">
@@ -231,9 +245,13 @@
   import { useI18n } from 'vue-i18n'
   import { useRouter } from 'vue-router'
   import AuthShell from '@/components/auth/AuthShell.vue'
+  import { ApiError } from '@/api/client'
+  import { authApi } from '@/api/auth'
+  import { useAuthStore } from '@/stores/auth'
 
   const router = useRouter()
   const { t } = useI18n()
+  const authStore = useAuthStore()
 
   const fullName = ref('')
   const email = ref('')
@@ -242,6 +260,8 @@
   const selectedSports = ref<string[]>([])
   const currentStep = ref(1)
   const isGoogleSignup = ref(false)
+  const isOAuthLoading = ref(false)
+  const errorMessage = ref('')
   const stepContentInner = ref<HTMLElement | null>(null)
   const stepShellHeight = ref('0px')
 
@@ -308,23 +328,47 @@
     submitRegister()
   }
 
-  function activateGoogleSignup () {
-    isGoogleSignup.value = true
-    email.value = ''
-    password.value = ''
-    confirmPassword.value = ''
+  async function activateGoogleSignup () {
+    isOAuthLoading.value = true
+    errorMessage.value = ''
+    try {
+      const { authorization_url } = await authApi.getOAuthRedirectUrl('google')
+      window.location.href = authorization_url
+    } catch {
+      errorMessage.value = t('auth.errors.serverError')
+      isOAuthLoading.value = false
+    }
   }
 
   function deactivateGoogleSignup () {
     isGoogleSignup.value = false
+    isOAuthLoading.value = false
     if (currentStep.value > 1) {
       currentStep.value = 1
     }
   }
 
-  function submitRegister () {
+  async function submitRegister () {
     if (!canSubmit.value) return
-    router.push('/app/feed')
+    errorMessage.value = ''
+    try {
+      await authStore.register(email.value, password.value, fullName.value || undefined)
+      router.push('/app/feed')
+    } catch (e) {
+      if (e instanceof ApiError) {
+        if (e.status === 409) {
+          errorMessage.value = t('auth.errors.emailTaken')
+        } else if (e.status === 429) {
+          errorMessage.value = t('auth.errors.tooManyAttempts')
+        } else if (e.status === 422) {
+          errorMessage.value = t('auth.errors.weakPassword')
+        } else {
+          errorMessage.value = t('auth.errors.serverError')
+        }
+      } else {
+        errorMessage.value = t('auth.errors.networkError')
+      }
+    }
   }
 
   function syncStepHeight () {
