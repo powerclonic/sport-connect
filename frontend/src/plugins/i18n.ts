@@ -102,6 +102,14 @@ const messages = {
         yoga: 'Yoga',
         beachTennis: 'Beach Tennis',
       },
+      errors: {
+        invalidCredentials: 'Invalid email or password.',
+        emailTaken: 'An account with this email already exists.',
+        tooManyAttempts: 'Too many attempts. Please try again in a minute.',
+        serverError: 'Something went wrong. Please try again.',
+        networkError: 'Cannot connect to server. Check your connection.',
+        weakPassword: 'Password must include uppercase, lowercase and a number.',
+      },
     },
     feed: {
       title: 'Nearby activities',
@@ -557,6 +565,14 @@ const messages = {
         crossfit: 'Crossfit',
         yoga: 'Yoga',
         beachTennis: 'Beach Tennis',
+      },
+      errors: {
+        invalidCredentials: 'E-mail ou senha inválidos.',
+        emailTaken: 'Já existe uma conta com este e-mail.',
+        tooManyAttempts: 'Muitas tentativas. Tente novamente em um minuto.',
+        serverError: 'Algo deu errado. Tente novamente.',
+        networkError: 'Não foi possível conectar ao servidor. Verifique sua conexão.',
+        weakPassword: 'A senha deve ter letras maiúsculas, minúsculas e um número.',
       },
     },
     feed: {
