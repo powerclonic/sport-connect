@@ -4,9 +4,17 @@
  * Manual routes for ./src/pages/*.vue
  */
 
+import 'vue-router'
+declare module 'vue-router' {
+  interface RouteMeta {
+    publicOnly?: boolean
+  }
+}
+
 import { createRouter, createWebHistory } from 'vue-router'
 import AppShell from '@/layouts/AppShell.vue'
 import ChatEventPage from '@/pages/chat-event.vue'
+import OAuthCallbackPage from '@/pages/oauth-callback.vue'
 import ChatPage from '@/pages/chat.vue'
 import CreateEventPage from '@/pages/create-event.vue'
 import FeedPage from '@/pages/feed.vue'
@@ -25,6 +33,7 @@ import SearchPage from '@/pages/search.vue'
 import SecurityPage from '@/pages/security.vue'
 import SettingsPage from '@/pages/settings.vue'
 import ThemePage from '@/pages/theme.vue'
+import { useAuthStore } from '@/stores/auth'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,10 +49,16 @@ const router = createRouter({
     {
       path: '/login',
       component: LoginPage,
+      meta: { publicOnly: true },
     },
     {
       path: '/register',
       component: RegisterPage,
+      meta: { publicOnly: true },
+    },
+    {
+      path: '/oauth/callback',
+      component: OAuthCallbackPage,
     },
     {
       path: '/app',
@@ -117,6 +132,28 @@ const router = createRouter({
       component: NotFoundPage,
     },
   ],
+})
+
+let _authInitialized = false
+
+router.beforeEach(async (to) => {
+  const authStore = useAuthStore()
+
+  if (!_authInitialized) {
+    _authInitialized = true
+    await authStore.initialize()
+  }
+
+  const requiresAuth = to.path.startsWith('/app')
+  const publicOnly = to.meta.publicOnly === true
+
+  if (requiresAuth && !authStore.isAuthenticated) {
+    return { path: '/login', query: { redirect: to.fullPath } }
+  }
+
+  if (publicOnly && authStore.isAuthenticated) {
+    return '/app/feed'
+  }
 })
 
 export default router
