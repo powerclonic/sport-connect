@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Configurações de Notificação</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;900&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#38485d",
+                    "on-primary-fixed-variant": "#7a3000",
+                    "on-secondary": "#ffffff",
+                    "outline": "#8e7164",
+                    "inverse-primary": "#ffb693",
+                    "primary-fixed": "#ffdbcc",
+                    "on-surface-variant": "#5a4136",
+                    "on-surface": "#191c1e",
+                    "tertiary": "#505f76",
+                    "tertiary-container": "#8a9ab2",
+                    "on-background": "#191c1e",
+                    "surface-tint": "#a04100",
+                    "primary-container": "#ff6b00",
+                    "surface-bright": "#f7f9fb",
+                    "surface-container-high": "#e6e8ea",
+                    "on-tertiary-container": "#223246",
+                    "secondary-container": "#dae2fd",
+                    "on-primary-fixed": "#351000",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "primary-fixed-dim": "#ffb693",
+                    "inverse-surface": "#2d3133",
+                    "background": "#f7f9fb",
+                    "on-primary-container": "#572000",
+                    "inverse-on-surface": "#eff1f3",
+                    "surface": "#f7f9fb",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "on-tertiary-fixed": "#0b1c30",
+                    "secondary": "#565e74",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-highest": "#e0e3e5",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#b7c8e1",
+                    "surface-container": "#eceef0",
+                    "secondary-fixed": "#dae2fd",
+                    "surface-variant": "#e0e3e5",
+                    "outline-variant": "#e2bfb0",
+                    "surface-dim": "#d8dadc",
+                    "on-secondary-container": "#5c647a",
+                    "primary": "#a04100",
+                    "on-error": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#f2f4f6",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed": "#d3e4fe",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed": "#131b2e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-padding": "24px",
+                    "stack-md": "16px",
+                    "unit": "8px",
+                    "gutter": "16px",
+                    "stack-sm": "8px",
+                    "stack-lg": "32px"
+            },
+            "fontFamily": {
+                    "rating-num": ["Lexend"],
+                    "h3": ["Lexend"],
+                    "h2": ["Lexend"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "h1": ["Lexend"]
+            },
+            "fontSize": {
+                    "rating-num": ["20px", { "lineHeight": "1", "fontWeight": "700" }],
+                    "h3": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                    "h2": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                    "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                    "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                    "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                    "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+            }
+        }
+      }
+    }
+    </script>
+<style>
+        /* Custom Toggle Switch Styles */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #a04100; /* primary */
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #a04100; /* primary */
+        }
+        .toggle-checkbox {
+            right: 0;
+            z-index: 1;
+            border-color: #e2bfb0;
+            transition: all 0.3s;
+        }
+        .toggle-label {
+            width: 3rem;
+            height: 1.5rem;
+            background-color: #d8dadc;
+            border-radius: 9999px;
+            transition: all 0.3s;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md text-body-md antialiased">
+<!-- TopAppBar -->
+<header class="sticky top-0 w-full z-50 border-b border-slate-100 dark:border-slate-900 shadow-sm dark:shadow-none bg-white dark:bg-slate-950">
+<div class="flex justify-between items-center px-6 py-4 w-full bg-white dark:bg-slate-950">
+<!-- Leading: Back Button (Since this is a specific settings page, replacing avatar with back icon logically for UX, but maintaining JSON styling structure where possible) -->
+<button aria-label="Back" class="text-orange-600 dark:text-orange-500 hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<!-- Headline -->
+<h1 class="font-lexend text-lg font-bold tracking-tight text-orange-600 dark:text-orange-500 uppercase tracking-tighter">
+                Notificações
+            </h1>
+<!-- Trailing: Notifications (JSON Default, keeping it to respect structure) -->
+<button aria-label="Notifications" class="text-orange-600 dark:text-orange-500 hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-3xl mx-auto px-container-padding py-stack-lg flex flex-col gap-stack-lg">
+<!-- Header Text -->
+<div class="mb-stack-sm">
+<h2 class="font-h2 text-h2 text-on-surface mb-unit">Gerenciar Alertas</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Escolha como e quando você deseja ser notificado sobre suas atividades no SportConnect.</p>
+</div>
+<!-- Section: Canais de Notificação -->
+<section class="bg-surface-container-lowest rounded-xl shadow-[0_4px_30px_rgba(0,0,0,0.04)] p-6">
+<h3 class="font-h3 text-h3 text-on-surface mb-stack-md border-b border-surface-variant pb-unit">Canais de Notificação</h3>
+<div class="flex flex-col gap-stack-md">
+<!-- Push -->
+<div class="flex items-center justify-between">
+<div>
+<p class="font-label-md text-label-md text-on-surface">Notificações Push</p>
+<p class="text-[13px] text-on-surface-variant mt-1">Alertas diretos no seu dispositivo móvel.</p>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" id="toggle_push" name="toggle_push" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer" for="toggle_push"></label>
+</div>
+</div>
+<!-- Email -->
+<div class="flex items-center justify-between">
+<div>
+<p class="font-label-md text-label-md text-on-surface">E-mail</p>
+<p class="text-[13px] text-on-surface-variant mt-1">Resumos semanais e alertas importantes.</p>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" id="toggle_email" name="toggle_email" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer" for="toggle_email"></label>
+</div>
+</div>
+<!-- SMS -->
+<div class="flex items-center justify-between">
+<div>
+<p class="font-label-md text-label-md text-on-surface">SMS</p>
+<p class="text-[13px] text-on-surface-variant mt-1">Mensagens de texto para urgências.</p>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" id="toggle_sms" name="toggle_sms" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer" for="toggle_sms"></label>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Categorias Específicas -->
+<section class="bg-surface-container-lowest rounded-xl shadow-[0_4px_30px_rgba(0,0,0,0.04)] p-6">
+<h3 class="font-h3 text-h3 text-on-surface mb-stack-md border-b border-surface-variant pb-unit">Categorias</h3>
+<div class="flex flex-col gap-stack-md">
+<!-- Novas Partidas -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="sports_soccer">sports_soccer</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Novas Partidas Próximas</p>
+<p class="text-[13px] text-on-surface-variant mt-1">Quando criarem jogos perto de você.</p>
+</div>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" id="cat_partidas" name="cat_partidas" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer" for="cat_partidas"></label>
+</div>
+</div>
+<!-- Mensagens -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Mensagens no Chat</p>
+<p class="text-[13px] text-on-surface-variant mt-1">Avisos de novas mensagens diretas.</p>
+</div>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" id="cat_mensagens" name="cat_mensagens" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer" for="cat_mensagens"></label>
+</div>
+</div>
+<!-- Lembretes -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="event">event</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Lembretes de Eventos</p>
+<p class="text-[13px] text-on-surface-variant mt-1">Avisos antes das suas partidas começarem.</p>
+</div>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" id="cat_lembretes" name="cat_lembretes" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer" for="cat_lembretes"></label>
+</div>
+</div>
+<!-- Avaliações -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="star">star</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Avaliações Recebidas</p>
+<p class="text-[13px] text-on-surface-variant mt-1">Quando alguém avaliar seu desempenho.</p>
+</div>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" id="cat_avaliacoes" name="cat_avaliacoes" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer" for="cat_avaliacoes"></label>
+</div>
+</div>
+</div>
+</section>
+<!-- Save Action -->
+<div class="mt-stack-md flex justify-end">
+<button class="bg-primary text-on-primary font-label-md text-label-md py-3 px-8 rounded-full shadow-[0_4px_20px_rgba(160,65,0,0.15)] hover:bg-surface-tint transition-colors active:scale-95">
+                Salvar Alterações
+            </button>
+</div>
+</main>
+<!-- BottomNavBar suppressed due to settings/task-focused nature -->
+</body></html>

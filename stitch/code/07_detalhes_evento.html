@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Event Details - Sunday Morning Football</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Lexend:wght@600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary-container": "#5c647a",
+                      "on-primary-fixed-variant": "#7a3000",
+                      "surface-bright": "#f7f9fb",
+                      "tertiary-fixed-dim": "#b7c8e1",
+                      "inverse-surface": "#2d3133",
+                      "surface-variant": "#e0e3e5",
+                      "on-error-container": "#93000a",
+                      "primary": "#a04100",
+                      "primary-container": "#ff6b00",
+                      "error-container": "#ffdad6",
+                      "surface-container-highest": "#e0e3e5",
+                      "secondary-fixed": "#dae2fd",
+                      "primary-fixed-dim": "#ffb693",
+                      "outline-variant": "#e2bfb0",
+                      "on-secondary-fixed-variant": "#3f465c",
+                      "on-tertiary-container": "#223246",
+                      "on-primary": "#ffffff",
+                      "tertiary-fixed": "#d3e4fe",
+                      "on-secondary-fixed": "#131b2e",
+                      "tertiary-container": "#8a9ab2",
+                      "on-error": "#ffffff",
+                      "secondary-container": "#dae2fd",
+                      "surface-tint": "#a04100",
+                      "on-primary-container": "#572000",
+                      "surface-container": "#eceef0",
+                      "secondary-fixed-dim": "#bec6e0",
+                      "on-tertiary": "#ffffff",
+                      "surface-dim": "#d8dadc",
+                      "surface": "#f7f9fb",
+                      "on-tertiary-fixed-variant": "#38485d",
+                      "background": "#f7f9fb",
+                      "surface-container-low": "#f2f4f6",
+                      "on-surface-variant": "#5a4136",
+                      "on-primary-fixed": "#351000",
+                      "on-tertiary-fixed": "#0b1c30",
+                      "on-background": "#191c1e",
+                      "inverse-primary": "#ffb693",
+                      "surface-container-high": "#e6e8ea",
+                      "primary-fixed": "#ffdbcc",
+                      "on-secondary": "#ffffff",
+                      "outline": "#8e7164",
+                      "error": "#ba1a1a",
+                      "inverse-on-surface": "#eff1f3",
+                      "tertiary": "#505f76",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary": "#565e74",
+                      "on-surface": "#191c1e"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-lg": "32px",
+                      "stack-md": "16px",
+                      "container-padding": "24px",
+                      "stack-sm": "8px",
+                      "unit": "8px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "h2": [
+                              "Lexend"
+                      ],
+                      "h1": [
+                              "Lexend"
+                      ],
+                      "h3": [
+                              "Lexend"
+                      ],
+                      "rating-num": [
+                              "Lexend"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "h2": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "h1": [
+                              "40px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "h3": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "rating-num": [
+                              "20px",
+                              {
+                                      "lineHeight": "1",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background antialiased pb-24 md:pb-0 font-body-md text-body-md min-h-screen flex flex-col">
+<!-- Top AppBar (Web Only) -->
+<header class="hidden md:flex sticky top-0 w-full z-50 shadow-sm dark:shadow-none bg-white dark:bg-slate-950 justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A close up portrait of a young professional wearing a casual outfit, photographed against a neutral light grey background. The lighting is soft and even, highlighting a friendly expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEJQWXXHBRggPG4GlPwqO5JTOjhOjA1gvio5Em6lAh_cd4venALvm12mUpDnfJa2M_oyyENcc_iPKQh6qaZkPtvtYl90CrmLky6D9pCFJMeAMn0ABxBKKxWvGPNPF74x_eoLZpTdzSETjBZHR85limGhBOIx4Glmhyd1Oc2u50IoOWVjgAhU0F9s95dWAKD092odgatXkm0Gt9uPt2sJPB6DVTABMtlL3jkKY9LOTHzO5rzi-ICYNchdExB-koUb46D4V2qY-K7vrT"/>
+</div>
+<span class="font-lexend text-lg font-bold tracking-tight text-orange-600 font-black uppercase tracking-tighter">SportConnect</span>
+</div>
+<nav class="flex gap-8">
+<a class="text-slate-400 dark:text-slate-600 hover:opacity-80 transition-opacity font-lexend text-sm font-semibold tracking-wide uppercase" href="#">Home</a>
+<a class="text-orange-600 font-bold hover:opacity-80 transition-opacity font-lexend text-sm font-semibold tracking-wide uppercase" href="#">Search</a>
+<a class="text-slate-400 dark:text-slate-600 hover:opacity-80 transition-opacity font-lexend text-sm font-semibold tracking-wide uppercase" href="#">Create</a>
+<a class="text-slate-400 dark:text-slate-600 hover:opacity-80 transition-opacity font-lexend text-sm font-semibold tracking-wide uppercase" href="#">Chat</a>
+<a class="text-slate-400 dark:text-slate-600 hover:opacity-80 transition-opacity font-lexend text-sm font-semibold tracking-wide uppercase" href="#">Profile</a>
+</nav>
+<button class="text-slate-400 dark:text-slate-600 hover:opacity-80 transition-opacity active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined text-2xl">notifications</span>
+</button>
+</header>
+<!-- Mobile Header with Back Button -->
+<div class="md:hidden sticky top-0 z-40 bg-background/90 backdrop-blur-md px-4 py-4 flex items-center justify-between">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] text-on-surface">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="flex-1 text-center">
+<h1 class="font-h3 text-h3 text-on-background">Event Details</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] text-on-surface">
+<span class="material-symbols-outlined">share</span>
+</button>
+</div>
+<!-- Main Content Area -->
+<main class="flex-1 w-full max-w-4xl mx-auto md:px-container-padding md:py-stack-lg">
+<!-- Hero Section -->
+<section class="relative w-full h-64 md:h-80 md:rounded-xl overflow-hidden mb-stack-lg shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+<img alt="Soccer Field" class="w-full h-full object-cover" data-alt="A pristine, vibrant green soccer field illuminated by early morning sunlight. The crisp white lines of the pitch contrast sharply with the lush grass. The lighting is bright and energetic, perfectly fitting a modern, active lifestyle aesthetic. The scene evokes a sense of anticipation and readiness for a dynamic sports event." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzYyLNrP3ssNBBBxdFCwTOwG3-CUN-RRsrJXH4L-jGxhx3pRzCuoQN9FIde_il2LfkBZGSpzALoXXmJ7K-iAbbmFSbuGb9SlpQKPtiy_UCzDOiUvpYuU80IuU2WNXb6pv2LrbwRM2Pg8CErShz5h2k5UAj-wjvOV4VNSwmg7aWCCckhf6MpPjt5bPZqgyWiaV2qh9UJsE2FLRkF5RwkNnhVdLblTSWXMVIN7tz96If6V6eQzcA2Ih5xOqYLz5Id0jAJXPANuED9bbG"/>
+<div class="absolute bottom-4 left-4 flex gap-2">
+<div class="px-3 py-1 bg-primary-fixed-dim/90 backdrop-blur text-on-primary-fixed-variant rounded-full font-label-md text-label-md shadow-sm">
+                    Football
+                 </div>
+<div class="px-3 py-1 bg-surface/90 backdrop-blur text-on-surface rounded-full font-label-md text-label-md shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">group</span> 12/14
+                 </div>
+</div>
+</section>
+<!-- Event Details Card -->
+<section class="bg-surface-container-lowest rounded-xl p-[24px] shadow-[0_4px_20px_rgba(0,0,0,0.04)] mb-stack-lg mx-4 md:mx-0 -mt-12 relative z-10 md:mt-0">
+<h2 class="font-h2 text-h2 text-on-background mb-stack-sm">Sunday Morning Football</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-md">Friendly 7v7 match for intermediate players. Come enjoy a great morning workout!</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md mt-stack-md">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant">Date &amp; Time</p>
+<p class="font-body-lg text-body-lg text-on-background font-medium">Sunday, Oct 15</p>
+<p class="font-body-md text-body-md text-on-surface-variant">09:00 AM - 10:30 AM</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant">Location</p>
+<p class="font-body-lg text-body-lg text-on-background font-medium">Central Park Turf</p>
+<p class="font-body-md text-body-md text-on-surface-variant">North Meadow, Field 3</p>
+</div>
+</div>
+</div>
+<!-- Map Snippet -->
+<div class="mt-stack-md h-32 rounded-lg overflow-hidden bg-surface-variant relative">
+<img alt="Map Location" class="w-full h-full object-cover opacity-80 mix-blend-multiply" data-alt="A stylized, clean digital map snippet showing a park area within a city grid. The map uses a very light, minimalist color palette with soft greys for streets and pale greens for park areas, fitting a modern light-mode UI. A subtle orange pin indicates the destination." data-location="New York Central Park" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjK3ctQMPyVO2wBwnd3XiFzzM7YijkpgMEKd-fJ1iay6qfniW5ljRLD-iSEkPwyKetB9LwLMpw8MiLRdwjkoa0ac3PFMcHGqQnqglxa8UystZQ1WuJ3Z-q_D94vUu4nfZjLKRTYTlyT3NSQ_KIWootWw5ofuD1IGeq3PHsOu01ob9lqOImC97lfb6oiuQXqIsZRl5s2CIV0vgpOic8NYbycovdtjfgNDdYd4CTWeoPdtWHVasxMY7Cd07VVsc75nzt1WObY8HKzict"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-sm">location_on</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Organizer Section -->
+<section class="bg-surface-container-lowest rounded-xl p-[20px] shadow-[0_4px_20px_rgba(0,0,0,0.04)] mb-stack-lg mx-4 md:mx-0 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<img alt="Organizer Avatar" class="w-14 h-14 rounded-full object-cover border-2 border-surface" data-alt="A headshot of an energetic young man smiling broadly, outdoors in bright daylight. He is wearing a simple athletic t-shirt. The background is a soft, out-of-focus park setting, fitting the active and approachable vibe of a sports community organizer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcOOKOhNLtWd9qdgI1KsEMKfy36CxgaDWj9FTRTyMXAzPNJjUZRZvbQTEj9LrbJc0PTok8BjiPlgrV690KRWN8IkXsetnzcXhoLZaFRRdyxUGCnQXruJOjSpDbpl0mxany0tHLL72ZAWvvyU18ZsqoL2bqU_W3DtFL7T2U3X3jzIqRn6mzDF2oxa2I7ThhEGEWBT7gUpX7W9GMEHe1pM51xCwRTuoTumtLv-gRzoSd2yub5EHzp0c82g3js3_GU2W_RVnEegxgXPZJ"/>
+<div>
+<h3 class="font-body-lg text-body-lg font-semibold text-on-background">Alex Johnson</h3>
+<div class="flex items-center gap-1 mt-1">
+<span class="px-2 py-0.5 bg-surface-container text-on-surface-variant rounded text-[10px] font-bold uppercase tracking-wider">Organizer</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<span class="font-rating-num text-rating-num text-on-background">4.8</span>
+<span class="material-symbols-outlined text-primary-container" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</section>
+<!-- Participants Section -->
+<section class="mb-stack-lg mx-4 md:mx-0">
+<div class="flex items-center justify-between mb-stack-sm">
+<h3 class="font-h3 text-h3 text-on-background">Participants (12)</h3>
+<a class="font-label-md text-label-md text-primary-container hover:text-primary transition-colors" href="#">See all</a>
+</div>
+<div class="flex overflow-x-auto gap-4 pb-4 snap-x hide-scrollbar">
+<!-- Participant 1 -->
+<div class="flex flex-col items-center gap-2 snap-start shrink-0">
+<div class="relative">
+<img alt="Participant" class="w-16 h-16 rounded-full object-cover shadow-sm" data-alt="A portrait of a young woman with a relaxed expression, taken outdoors with soft, natural lighting. She is wearing casual activewear. The background is blurred, bright, and airy, consistent with a clean, modern lifestyle aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCy7mQ9l-eKBjJRnE_dMpPRko6RTNR_pR-GtpbrvoATL9liUpiuAKBwTMoNtSos7j7UyhLQ3m6g3LDjMymOeS4qyZq44b2RBiPkB43-583Kv0_h8veTgQv3P30USjupmuIOl2c8Ant2j-tm7NuIgdAV5L86Zks0nQnzfuCzu8zfHdLVDRBFVCHQWYRTHN5_csTVQs27l6xnGDz_v-V_Ehd0PQfHkCRPD4uOEqbtLkLb2W92lo3t6NXV7O3_QfTTXoTnobKkbUbuMPJN"/>
+</div>
+<span class="font-body-md text-[13px] text-on-background">Sarah M.</span>
+<div class="flex items-center gap-0.5 bg-surface-container-low px-2 py-0.5 rounded-full">
+<span class="font-rating-num text-[12px] text-on-surface-variant">4.9</span>
+<span class="material-symbols-outlined text-primary-container text-[12px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<!-- Participant 2 -->
+<div class="flex flex-col items-center gap-2 snap-start shrink-0">
+<div class="relative">
+<img alt="Participant" class="w-16 h-16 rounded-full object-cover shadow-sm" data-alt="A portrait of a young man looking directly at the camera with a neutral, confident expression. The lighting is clean and bright, characteristic of a light-mode design environment. He wears simple, athletic-style clothing against an indistinct, light background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCR9ytRswBdeswBCz6SWMjwwmRCZGUvCkC8F_RkgnfBWIMgTefvZg44DqjDYJFFy1iiOLWY8ThfQCaNNK0gaGIH71MnllEWI1K3g39kWUJcbI-9XB_N13VJmHczaSA6mU__STI6y_fgx7XssY6Ge05j_w3mzSaHNwce1Yy3NkCSNm3u42AoQFK2N1zBcCL5VvtQ4gVCe4oymqO5vZqp2gerHr7tcuuUNpqvUS4iNmwzTbOVPeCabstUVns24FHM9-sfUyzWsKXWVckx"/>
+</div>
+<span class="font-body-md text-[13px] text-on-background">David K.</span>
+<div class="flex items-center gap-0.5 bg-surface-container-low px-2 py-0.5 rounded-full">
+<span class="font-rating-num text-[12px] text-on-surface-variant">4.5</span>
+<span class="material-symbols-outlined text-primary-container text-[12px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<!-- Participant 3 -->
+<div class="flex flex-col items-center gap-2 snap-start shrink-0">
+<div class="relative">
+<img alt="Participant" class="w-16 h-16 rounded-full object-cover shadow-sm" data-alt="Close up shot of a smiling woman outdoors in a sunny environment. Her casual demeanor and activewear suggest readiness for a social sports event. The image is bright, high key, and cleanly composed, fitting perfectly within a polished, modern application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1crhvWGhaT6YudMLOumaHTShQi0HoOkohOV1Rs7sIKbRnRbzVyq_RBS_HLBJXAdvfX7Xo5zUMgZPDz0vBBt9T4amjJDXVGO_5J9YzvfuI-OhyNiQL6xhSO4FGEJN6s3Vju0d-0DisGybOFqHQi_P3vLZl9a5JrRpXs2UKXHO7SFQGVIW26yhFS44cjOvDF8fp-99Bkai3OUfMEb6SYEDUMn4SSZQt64gB04GY9hlp_6-xXGOl88VKv9ZWPEMyiH3ZdCcgQrt4kbDB"/>
+</div>
+<span class="font-body-md text-[13px] text-on-background">Emma T.</span>
+<div class="flex items-center gap-0.5 bg-surface-container-low px-2 py-0.5 rounded-full">
+<span class="font-rating-num text-[12px] text-on-surface-variant">4.7</span>
+<span class="material-symbols-outlined text-primary-container text-[12px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<!-- Participant 4 -->
+<div class="flex flex-col items-center gap-2 snap-start shrink-0">
+<div class="relative flex items-center justify-center w-16 h-16 rounded-full bg-surface-container text-on-surface-variant shadow-sm border border-surface-dim">
+<span class="material-symbols-outlined">person</span>
+</div>
+<span class="font-body-md text-[13px] text-on-background">Chris L.</span>
+<div class="flex items-center gap-0.5 bg-surface-container-low px-2 py-0.5 rounded-full">
+<span class="font-rating-num text-[12px] text-on-surface-variant">New</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Spacer for FAB/Bottom Nav -->
+<div class="h-24 md:h-16"></div>
+</main>
+<!-- Action Bar (Sticky Bottom, above nav) -->
+<div class="fixed bottom-[68px] md:bottom-0 left-0 w-full z-40 bg-gradient-to-t from-background via-background to-transparent px-4 py-4 md:px-0 md:bg-none md:static md:flex md:justify-center md:pb-stack-lg">
+<button class="w-full md:w-auto md:min-w-[300px] bg-primary-container text-on-primary py-4 px-8 rounded-full font-label-md text-label-md shadow-[0_8px_20px_rgba(255,107,0,0.3)] hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+            Join Event
+            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-white/95 dark:bg-slate-950/95 backdrop-blur-md shadow-[0_-4px_20px_rgba(0,0,0,0.04)]">
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-orange-400 transition-colors active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-lexend text-[10px] font-semibold tracking-wide uppercase mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-orange-600 dark:text-orange-500 hover:text-orange-400 transition-colors active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="search" data-weight="fill" style="font-variation-settings: 'FILL' 1;">search</span>
+<span class="font-lexend text-[10px] font-semibold tracking-wide uppercase mt-1">Search</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-orange-400 transition-colors active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+<span class="font-lexend text-[10px] font-semibold tracking-wide uppercase mt-1">Create</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-orange-400 transition-colors active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-lexend text-[10px] font-semibold tracking-wide uppercase mt-1">Chat</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-orange-400 transition-colors active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-lexend text-[10px] font-semibold tracking-wide uppercase mt-1">Profile</span>
+</a>
+</nav>
+<style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    </style>
+</body></html>

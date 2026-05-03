@@ -1,0 +1,17 @@
+@layer base {
+  :root {
+    --font-heading: 'Lexend', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'Roboto Mono', monospace;
+    --app-bg: #f7f9fb;
+    --app-on-bg: #191c1e;
+    --app-on-bg-muted: #565e74;
+    color-scheme: light;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+

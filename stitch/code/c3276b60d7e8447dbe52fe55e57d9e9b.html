@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;800;900&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#f7f9fb",
+                    "on-surface": "#191c1e",
+                    "surface-container-low": "#f2f4f6",
+                    "surface-container-high": "#e6e8ea",
+                    "on-primary-fixed": "#351000",
+                    "on-surface-variant": "#5a4136",
+                    "primary-container": "#ff6b00",
+                    "error-container": "#ffdad6",
+                    "surface-tint": "#a04100",
+                    "primary": "#a04100",
+                    "outline-variant": "#e2bfb0",
+                    "primary-fixed-dim": "#ffb693",
+                    "error": "#ba1a1a",
+                    "tertiary": "#505f76",
+                    "tertiary-container": "#8a9ab2",
+                    "inverse-surface": "#2d3133",
+                    "inverse-primary": "#ffb693",
+                    "surface-variant": "#e0e3e5",
+                    "surface-dim": "#d8dadc",
+                    "surface-container": "#eceef0",
+                    "background": "#f7f9fb",
+                    "on-tertiary-fixed-variant": "#38485d",
+                    "on-tertiary-container": "#223246",
+                    "on-primary-container": "#572000",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error": "#ffffff",
+                    "inverse-on-surface": "#eff1f3",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed": "#0b1c30",
+                    "tertiary-fixed-dim": "#b7c8e1",
+                    "primary-fixed": "#ffdbcc",
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#dae2fd",
+                    "on-secondary-container": "#5c647a",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed": "#dae2fd",
+                    "surface-container-highest": "#e0e3e5",
+                    "on-primary-fixed-variant": "#7a3000",
+                    "tertiary-fixed": "#d3e4fe",
+                    "on-background": "#191c1e",
+                    "outline": "#8e7164",
+                    "on-secondary-fixed": "#131b2e",
+                    "surface": "#f7f9fb",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "secondary": "#565e74",
+                    "on-primary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "stack-sm": "8px",
+                    "stack-lg": "32px",
+                    "container-padding": "24px",
+                    "unit": "8px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "h3": ["Lexend"],
+                    "h2": ["Lexend"],
+                    "rating-num": ["Lexend"],
+                    "label-md": ["Inter"],
+                    "h1": ["Lexend"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "h3": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "h2": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "rating-num": ["20px", {"lineHeight": "1", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "h1": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .step-active { width: 48px; }
+        .step-inactive { width: 12px; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="font-body-md text-on-surface min-h-screen flex flex-col relative antialiased">
+<!-- Fixed Background Image -->
+<div class="fixed inset-0 z-0">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpxZH3vy6DUyyHy_jTxKjBw2TEJIruu56pi_FZYzW0YjK4tuKxw7LWIH-HGwMnHkVyr6_3jOXqNjAvQgrsbgYlpvuPIqjk8jXN7pApwy7-IXEmdS73ffjXjT3PJoHE2LCeycilQMtiX-JXodYNRI9hiG8R7Vp9n1VH_hs4PjctnKhxQTI24kIrmgSIFZXMejVQq9Z8LYP-Zp1GY5YjAmBHJ_JnW_vhzc9i520b0jMIiULX9D7LRB8NFNAqmMV3oBmT0Z4meNckOWFo"/>
+<div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/80"></div>
+</div>
+<!-- Header (Transparent over background) -->
+<header class="relative z-10 w-full flex justify-between items-center px-6 py-6">
+<div class="text-2xl font-black text-white uppercase tracking-tighter font-h1">Sport<span class="text-primary-container">Connect</span></div>
+<button class="p-2 text-white hover:opacity-80 transition-opacity active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</header>
+<main class="relative z-10 w-full flex-1 flex flex-col mt-8">
+<div class="bg-white rounded-t-[32px] w-full max-w-2xl mx-auto flex-1 px-container-padding pt-10 pb-24 shadow-2xl flex flex-col">
+<!-- Progress Indicator -->
+<div class="flex gap-2 mb-stack-lg">
+<div class="h-2 bg-primary-container rounded-full step-active transition-all duration-300"></div>
+<div class="h-2 bg-surface-container-high rounded-full step-inactive transition-all duration-300"></div>
+<div class="h-2 bg-surface-container-high rounded-full step-inactive transition-all duration-300"></div>
+</div>
+<section class="space-y-stack-md">
+<h1 class="font-h2 text-h2 text-on-surface">Junte-se à nossa comunidade</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg">Crie seu perfil de atleta e comece a se conectar com outros jogadores e organizadores.</p>
+</section>
+<!-- Main Registration Form -->
+<div class="mt-stack-lg space-y-stack-lg">
+<!-- Bento Section: Account Details -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<div class="space-y-stack-sm col-span-1 md:col-span-2">
+<label class="font-label-md text-label-md text-on-surface-variant px-1">NOME COMPLETO</label>
+<input class="w-full bg-[#F1F5F9] border-0 rounded-lg p-4 focus:bg-white focus:ring-2 focus:ring-primary-container transition-all outline-none" placeholder="Como devemos te chamar?" type="text"/>
+</div>
+<div class="space-y-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant px-1">EMAIL</label>
+<input class="w-full bg-[#F1F5F9] border-0 rounded-lg p-4 focus:bg-white focus:ring-2 focus:ring-primary-container transition-all outline-none" placeholder="seu@email.com" type="email"/>
+</div>
+<div class="space-y-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant px-1">SENHA</label>
+<input class="w-full bg-[#F1F5F9] border-0 rounded-lg p-4 focus:bg-white focus:ring-2 focus:ring-primary-container transition-all outline-none" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<hr class="border-surface-container-high"/>
+<!-- Selection Section: Sports Interests -->
+<div class="space-y-stack-md">
+<div class="flex justify-between items-end">
+<div class="space-y-1">
+<h3 class="font-h3 text-h3">Esportes Favoritos</h3>
+<p class="font-body-md text-on-surface-variant">Selecione pelo menos 3 para personalizar seu feed.</p>
+</div>
+</div>
+<!-- Chips Grid -->
+<div class="flex flex-wrap gap-stack-sm">
+<button class="px-4 py-2 rounded-full border border-primary-container bg-orange-50 text-primary-container font-label-md flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Futebol
+                    </button>
+<button class="px-4 py-2 rounded-full border border-slate-200 bg-white text-on-surface-variant font-label-md hover:border-primary-container hover:text-primary-container transition-colors">Vôlei</button>
+<button class="px-4 py-2 rounded-full border border-primary-container bg-orange-50 text-primary-container font-label-md flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Tênis
+                    </button>
+<button class="px-4 py-2 rounded-full border border-slate-200 bg-white text-on-surface-variant font-label-md hover:border-primary-container hover:text-primary-container transition-colors">Basquete</button>
+<button class="px-4 py-2 rounded-full border border-slate-200 bg-white text-on-surface-variant font-label-md hover:border-primary-container hover:text-primary-container transition-colors">Corrida</button>
+<button class="px-4 py-2 rounded-full border border-slate-200 bg-white text-on-surface-variant font-label-md hover:border-primary-container hover:text-primary-container transition-colors">Natação</button>
+<button class="px-4 py-2 rounded-full border border-primary-container bg-orange-50 text-primary-container font-label-md flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Crossfit
+                    </button>
+<button class="px-4 py-2 rounded-full border border-slate-200 bg-white text-on-surface-variant font-label-md hover:border-primary-container hover:text-primary-container transition-colors">Yoga</button>
+<button class="px-4 py-2 rounded-full border border-slate-200 bg-white text-on-surface-variant font-label-md hover:border-primary-container hover:text-primary-container transition-colors">Beach Tennis</button>
+</div>
+</div>
+<!-- Image/Visual Anchor Section (Bento Style) -->
+<div class="grid grid-cols-3 gap-stack-sm h-32">
+<div class="col-span-2 rounded-xl overflow-hidden relative group">
+<img class="w-full h-full object-cover" data-alt="A dynamic action shot of a diverse group of athletes high-fiving during a sunset outdoor training session. The lighting is warm and golden, highlighting the sweat and intense motivation on their faces. The composition is wide, showcasing a modern urban athletic field with clean lines and premium infrastructure, perfectly matching the energetic and community-focused SportConnect brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpxZH3vy6DUyyHy_jTxKjBw2TEJIruu56pi_FZYzW0YjK4tuKxw7LWIH-HGwMnHkVyr6_3jOXqNjAvQgrsbgYlpvuPIqjk8jXN7pApwy7-IXEmdS73ffjXjT3PJoHE2LCeycilQMtiX-JXodYNRI9hiG8R7Vp9n1VH_hs4PjctnKhxQTI24kIrmgSIFZXMejVQq9Z8LYP-Zp1GY5YjAmBHJ_JnW_vhzc9i520b0jMIiULX9D7LRB8NFNAqmMV3oBmT0Z4meNckOWFo"/>
+<div class="absolute inset-0 bg-primary/20 group-hover:bg-transparent transition-colors duration-300"></div>
+</div>
+<div class="col-span-1 rounded-xl overflow-hidden relative group">
+<img class="w-full h-full object-cover" data-alt="Close up of high-end athletic equipment including a sleek orange water bottle and modern running shoes neatly arranged on a white minimalist surface. The lighting is high-key and bright, creating a clean athletic-luxe aesthetic that emphasizes professionalism and clarity. The scene is uncluttered with generous whitespace, reflecting the modern minimalism of the SportConnect interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIX3Xnzuy-IWxRkL1Bup9zq5xxRRKrx5m1L-CEZJaaQs-oUY2bZOZiXRQZofKt9VktBWTae-KsX2oCPLqnqPvG4YAS1LB_LcbxLopsj2Ge5X1QYDb_gFMVUrs2QyzysrrtACClz9z_MpCYAodlO8B7OzXB1i2YnPdLlnMFdF5hCG_t8ZyZfCHe21kZicKx4_1236p-_jvJSu4US1JV1YCCQtzL2jk2IMlpLN6PahdO79xkUUV5zpORPyAzqr787hOpUpkpnIX3s3DC"/>
+<div class="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors duration-300"></div>
+</div>
+</div>
+<!-- Primary Action -->
+<div class="pt-stack-md flex flex-col items-center space-y-4">
+<button class="w-full py-4 bg-primary-container text-white font-h3 rounded-full shadow-[0_8px_30px_rgb(255,107,0,0.3)] active:scale-95 transition-all duration-200 hover:opacity-90">
+                    Criar Conta
+                </button>
+<p class="font-body-md text-on-surface-variant text-center">
+                    Já tem uma conta? <a class="text-primary-container font-bold hover:underline" href="#">Entre aqui</a>
+</p>
+</div>
+</div>
+<!-- Trust & Footer Section -->
+<div class="mt-stack-lg grid grid-cols-1 md:grid-cols-3 gap-6 opacity-60">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="verified_user">verified_user</span>
+<div>
+<p class="font-label-md text-xs uppercase">Segurança</p>
+<p class="text-xs">Seus dados estão protegidos por criptografia de ponta a ponta.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="groups">groups</span>
+<div>
+<p class="font-label-md text-xs uppercase">Comunidade</p>
+<p class="text-xs">+10k atletas conectados em todo o Brasil.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="emoji_events">emoji_events</span>
+<div>
+<p class="font-label-md text-xs uppercase">Conquistas</p>
+<p class="text-xs">Ganhe badges e melhore seu ranking no app.</p>
+</div>
+</div>
+</div>
+<!-- Consent & Legals -->
+<footer class="w-full py-8 mt-auto text-center text-slate-400 text-xs border-t border-slate-100">
+<p>Ao clicar em "Criar Conta", você concorda com nossos <a class="underline" href="#">Termos de Serviço</a> e <a class="underline" href="#">Política de Privacidade</a>.</p>
+<p class="mt-2">© 2024 SportConnect. Todos os direitos reservados.</p>
+</footer>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Create Event</title>
+<!-- Google Fonts: Lexend & Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Lexend:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-container": "#5c647a",
+                    "on-primary-fixed-variant": "#7a3000",
+                    "surface-bright": "#f7f9fb",
+                    "tertiary-fixed-dim": "#b7c8e1",
+                    "inverse-surface": "#2d3133",
+                    "surface-variant": "#e0e3e5",
+                    "on-error-container": "#93000a",
+                    "primary": "#a04100",
+                    "primary-container": "#ff6b00",
+                    "error-container": "#ffdad6",
+                    "surface-container-highest": "#e0e3e5",
+                    "secondary-fixed": "#dae2fd",
+                    "primary-fixed-dim": "#ffb693",
+                    "outline-variant": "#e2bfb0",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "on-tertiary-container": "#223246",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed": "#d3e4fe",
+                    "on-secondary-fixed": "#131b2e",
+                    "tertiary-container": "#8a9ab2",
+                    "on-error": "#ffffff",
+                    "secondary-container": "#dae2fd",
+                    "surface-tint": "#a04100",
+                    "on-primary-container": "#572000",
+                    "surface-container": "#eceef0",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "on-tertiary": "#ffffff",
+                    "surface-dim": "#d8dadc",
+                    "surface": "#f7f9fb",
+                    "on-tertiary-fixed-variant": "#38485d",
+                    "background": "#f7f9fb",
+                    "surface-container-low": "#f2f4f6",
+                    "on-surface-variant": "#5a4136",
+                    "on-primary-fixed": "#351000",
+                    "on-tertiary-fixed": "#0b1c30",
+                    "on-background": "#191c1e",
+                    "inverse-primary": "#ffb693",
+                    "surface-container-high": "#e6e8ea",
+                    "primary-fixed": "#ffdbcc",
+                    "on-secondary": "#ffffff",
+                    "outline": "#8e7164",
+                    "error": "#ba1a1a",
+                    "inverse-on-surface": "#eff1f3",
+                    "tertiary": "#505f76",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary": "#565e74",
+                    "on-surface": "#191c1e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-lg": "32px",
+                    "stack-md": "16px",
+                    "container-padding": "24px",
+                    "stack-sm": "8px",
+                    "unit": "8px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "h2": ["Lexend"],
+                    "h1": ["Lexend"],
+                    "h3": ["Lexend"],
+                    "rating-num": ["Lexend"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"]
+            },
+            "fontSize": {
+                    "h2": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                    "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                    "h3": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                    "rating-num": ["20px", { "lineHeight": "1", "fontWeight": "700" }],
+                    "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                    "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                    "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background min-h-screen text-on-background font-body-md antialiased pb-24">
+<!-- Contextual TopAppBar for Create Flow -->
+<header class="sticky top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-white shadow-[0_4px_30px_rgba(0,0,0,0.03)] border-b border-surface-container-high backdrop-blur-md bg-white/95">
+<button class="material-symbols-outlined text-on-surface hover:opacity-80 transition-opacity active:scale-95">close</button>
+<h1 class="font-h3 text-h3 text-on-surface">Novo Evento</h1>
+<div class="w-6"></div> <!-- Spacer for centering -->
+</header>
+<main class="px-container-padding py-stack-lg flex flex-col gap-stack-lg max-w-md mx-auto">
+<!-- Step 1: Select Sport -->
+<section class="flex flex-col gap-stack-md">
+<h2 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">1. Select Sport</h2>
+<div class="grid grid-cols-3 gap-gutter">
+<!-- Selected Sport -->
+<div class="bg-primary-fixed border-2 border-primary rounded-xl p-4 flex flex-col items-center justify-center gap-2 shadow-[0_4px_20px_rgba(0,0,0,0.02)] cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary text-[32px]" style="font-variation-settings: 'FILL' 1;">sports_soccer</span>
+<span class="font-label-md text-label-md text-primary">Soccer</span>
+</div>
+<!-- Unselected Sports -->
+<div class="bg-surface-container-lowest border-2 border-transparent rounded-xl p-4 flex flex-col items-center justify-center gap-2 shadow-[0_4px_20px_rgba(0,0,0,0.02)] cursor-pointer hover:shadow-sm transition-all active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant text-[32px]">sports_basketball</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Basket</span>
+</div>
+<div class="bg-surface-container-lowest border-2 border-transparent rounded-xl p-4 flex flex-col items-center justify-center gap-2 shadow-[0_4px_20px_rgba(0,0,0,0.02)] cursor-pointer hover:shadow-sm transition-all active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant text-[32px]">sports_tennis</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Tennis</span>
+</div>
+<div class="bg-surface-container-lowest border-2 border-transparent rounded-xl p-4 flex flex-col items-center justify-center gap-2 shadow-[0_4px_20px_rgba(0,0,0,0.02)] cursor-pointer hover:shadow-sm transition-all active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant text-[32px]">pool</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Swim</span>
+</div>
+<div class="bg-surface-container-lowest border-2 border-transparent rounded-xl p-4 flex flex-col items-center justify-center gap-2 shadow-[0_4px_20px_rgba(0,0,0,0.02)] cursor-pointer hover:shadow-sm transition-all active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant text-[32px]">directions_run</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Run</span>
+</div>
+<div class="bg-surface-container-lowest border-2 border-transparent rounded-xl p-4 flex flex-col items-center justify-center gap-2 shadow-[0_4px_20px_rgba(0,0,0,0.02)] cursor-pointer hover:shadow-sm transition-all active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant text-[32px]">more_horiz</span>
+<span class="font-label-md text-label-md text-on-surface-variant">More</span>
+</div>
+</div>
+</section>
+<!-- Step 2: Location & Time -->
+<section class="flex flex-col gap-stack-md">
+<h2 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">2. Location &amp; Time</h2>
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">location_on</span>
+<input class="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded-lg py-4 pl-12 pr-4 border-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary transition-all placeholder:text-on-surface-variant/60 shadow-sm" placeholder="Search court or address..." type="text"/>
+</div>
+<div class="flex gap-gutter">
+<div class="relative w-1/2">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">calendar_today</span>
+<input class="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded-lg py-4 pl-12 pr-4 border-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary transition-all placeholder:text-on-surface-variant/60 shadow-sm" placeholder="Today" type="text"/>
+</div>
+<div class="relative w-1/2">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">schedule</span>
+<input class="w-full bg-surface-container-low text-on-surface font-body-md text-body-md rounded-lg py-4 pl-12 pr-4 border-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary transition-all placeholder:text-on-surface-variant/60 shadow-sm" placeholder="18:00" type="text"/>
+</div>
+</div>
+</section>
+<!-- Step 3: Privacy & Recurrence -->
+<section class="flex flex-col gap-stack-md">
+<h2 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">3. Settings</h2>
+<div class="flex gap-gutter">
+<button class="flex-1 bg-primary-fixed text-on-primary-fixed border-2 border-primary rounded-full py-3 font-label-md text-label-md flex justify-center items-center gap-2 shadow-[0_4px_15px_rgba(0,0,0,0.02)] active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[18px]">public</span> Public
+                </button>
+<button class="flex-1 bg-surface-container-lowest text-on-surface-variant border-2 border-transparent rounded-full py-3 font-label-md text-label-md flex justify-center items-center gap-2 shadow-[0_4px_15px_rgba(0,0,0,0.02)] hover:bg-surface-container transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[18px]">lock</span> Private
+                </button>
+</div>
+<div class="flex justify-between items-center bg-surface-container-lowest p-5 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] mt-stack-sm">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Recurring Event</span>
+<span class="font-body-md text-body-md text-on-surface-variant text-[13px] mt-1">Automatically repeat this schedule</span>
+</div>
+<!-- Custom Toggle Switch (Inactive state for visual balance) -->
+<div class="w-12 h-6 bg-surface-container-highest rounded-full relative cursor-pointer transition-colors hover:bg-surface-dim">
+<div class="w-4 h-4 bg-on-surface-variant rounded-full absolute left-1 top-1 transition-transform"></div>
+</div>
+</div>
+</section>
+<!-- Submit Action -->
+<div class="pt-stack-md">
+<button class="w-full bg-primary-container text-on-primary font-label-md text-label-md rounded-full py-4 shadow-[0_8px_25px_rgba(255,107,0,0.25)] hover:opacity-90 active:scale-[0.98] transition-all flex justify-center items-center gap-2 tracking-wide uppercase">
+                Create Event
+                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar (From JSON, Active State: Create) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-white/95 backdrop-blur-md shadow-[0_-4px_20px_rgba(0,0,0,0.04)] md:hidden">
+<button class="flex flex-col items-center justify-center text-slate-400 hover:text-orange-400 transition-colors active:scale-90 duration-150">
+<span class="material-symbols-outlined">home</span>
+<span class="font-lexend text-[10px] font-semibold tracking-wide uppercase mt-1">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 hover:text-orange-400 transition-colors active:scale-90 duration-150">
+<span class="material-symbols-outlined">search</span>
+<span class="font-lexend text-[10px] font-semibold tracking-wide uppercase mt-1">Search</span>
+</button>
+<!-- ACTIVE TAB -->
+<button class="flex flex-col items-center justify-center text-orange-600 active:scale-90 transition-all duration-150">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+<span class="font-lexend text-[10px] font-semibold tracking-wide uppercase mt-1">Create</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 hover:text-orange-400 transition-colors active:scale-90 duration-150">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-lexend text-[10px] font-semibold tracking-wide uppercase mt-1">Chat</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 hover:text-orange-400 transition-colors active:scale-90 duration-150">
+<span class="material-symbols-outlined">person</span>
+<span class="font-lexend text-[10px] font-semibold tracking-wide uppercase mt-1">Profile</span>
+</button>
+</nav>
+</body></html>

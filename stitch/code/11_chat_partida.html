@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Match Chat - SportConnect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Lexend:wght@600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#5c647a",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "surface-bright": "#f7f9fb",
+                        "tertiary-fixed-dim": "#b7c8e1",
+                        "inverse-surface": "#2d3133",
+                        "surface-variant": "#e0e3e5",
+                        "on-error-container": "#93000a",
+                        "primary": "#a04100",
+                        "primary-container": "#ff6b00",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#e0e3e5",
+                        "secondary-fixed": "#dae2fd",
+                        "primary-fixed-dim": "#ffb693",
+                        "outline-variant": "#e2bfb0",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-tertiary-container": "#223246",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#d3e4fe",
+                        "on-secondary-fixed": "#131b2e",
+                        "tertiary-container": "#8a9ab2",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#dae2fd",
+                        "surface-tint": "#a04100",
+                        "on-primary-container": "#572000",
+                        "surface-container": "#eceef0",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#d8dadc",
+                        "surface": "#f7f9fb",
+                        "on-tertiary-fixed-variant": "#38485d",
+                        "background": "#f7f9fb",
+                        "surface-container-low": "#f2f4f6",
+                        "on-surface-variant": "#5a4136",
+                        "on-primary-fixed": "#351000",
+                        "on-tertiary-fixed": "#0b1c30",
+                        "on-background": "#191c1e",
+                        "inverse-primary": "#ffb693",
+                        "surface-container-high": "#e6e8ea",
+                        "primary-fixed": "#ffdbcc",
+                        "on-secondary": "#ffffff",
+                        "outline": "#8e7164",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#eff1f3",
+                        "tertiary": "#505f76",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#565e74",
+                        "on-surface": "#191c1e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "32px",
+                        "stack-md": "16px",
+                        "container-padding": "24px",
+                        "stack-sm": "8px",
+                        "unit": "8px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "h2": ["Lexend"],
+                        "h1": ["Lexend"],
+                        "h3": ["Lexend"],
+                        "rating-num": ["Lexend"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h2": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "h3": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "rating-num": ["20px", { "lineHeight": "1", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Scrollbar hiding for clean UI */
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background h-screen flex flex-col font-body-md overflow-hidden relative selection:bg-primary-container selection:text-on-primary">
+<!-- TopAppBar (JSON Sourced) -->
+<header class="sticky top-0 w-full z-50 border-b border-slate-100 dark:border-slate-900 shadow-sm dark:shadow-none bg-white dark:bg-slate-950 flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-3 active:scale-95 transition-transform duration-200 cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-secondary-container bg-cover bg-center overflow-hidden border border-surface-container" data-alt="A closely cropped, brightly lit portrait of a young professional athlete with a friendly expression. They are wearing a simple, modern athletic top. The lighting is soft and natural, emphasizing a pristine, highly-polished light-mode aesthetic. The background is a slightly blurred, very light gray to keep the focus entirely on the person." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDR4HjBTtL7dnz8zfs6U1TQRgfOzvbuoEBNTh2l6sN1a90xVxRc-dk45ZKmuKIincMiemgcDCXxK-vJP5tpNxnaGCQEIcXMJwH3Agz6xCV3HxShvUO0PeOJZ6m9nUFApitwP2hUSFT8VUwyYf8Tw68QEDFWu-VG6cfn85-XU4tJOaB8GiHNN0ppZZFHYhPG-T8FQosxxs_NFEMo1orafoIIE9_jWQYl7Z6W1S7bhNRdHTL3VtZckyxMaOlSpBqmTQMqTYwg-Idfyha1');"></div>
+</div>
+<h1 class="text-xl font-black text-orange-600 dark:text-orange-500 uppercase tracking-tighter">SportConnect</h1>
+<button class="text-orange-600 dark:text-orange-500 hover:opacity-80 transition-opacity active:scale-95 transition-transform duration-200 flex items-center justify-center w-10 h-10 rounded-full bg-surface-container-lowest shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+</button>
+</header>
+<!-- Contextual Chat Header -->
+<div class="bg-surface-container-lowest px-container-padding py-stack-sm flex justify-between items-center border-b border-surface-container z-40 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-lg bg-tertiary-container flex items-center justify-center flex-shrink-0 bg-cover bg-center" data-alt="A vivid, dynamic close-up of a perfectly clean, classic black and white soccer ball resting on perfectly manicured, bright green artificial turf. The lighting is crisp and energetic, suggesting a sunny afternoon match. The overall mood is active and professional, aligning with a premium sports community app." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBM8wL4-HpJjA8YXZ7Undc9DM4KuL6xBv3G7UxwYx8CiK191CQ8gnTdz2bA9aOTbNodZIDuG3xdl66CbnC5f5FXvLgLLnzw-wy36VsvsbjdebnZHnAtwy8WQY731d6fPqKqLrD3H7P3mE7Rcc2eFvYrmLBt4Q-AXUAdrXSI5f0oJJxxEp4OKDpMaPsHNaUxveFJ9FjVe87pTfbyKvjGYLJjqJHlD1aphsyo3RGlOboXyOtmjm25vsndxrQTbvOGQv8DZVwR1egY6034');"></div>
+<div>
+<h2 class="font-h3 text-h3 text-on-surface">Sunday Football</h2>
+<p class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-[#10B981]"></span>
+                    8 Online
+                </p>
+</div>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">info</span>
+</button>
+</div>
+<!-- Chat Canvas -->
+<main class="flex-1 overflow-y-auto px-container-padding py-stack-md flex flex-col gap-stack-md pb-[160px] md:pb-[100px]">
+<!-- Timestamp / System Message -->
+<div class="mx-auto text-center my-stack-sm">
+<span class="bg-surface-container px-4 py-1.5 rounded-full font-label-md text-[12px] font-semibold tracking-wider uppercase text-on-surface-variant">Today, 2:14 PM</span>
+</div>
+<!-- Other User Message -->
+<div class="flex items-end gap-3 max-w-[85%] md:max-w-[70%]">
+<div class="w-8 h-8 rounded-full bg-secondary-container bg-cover bg-center flex-shrink-0 mb-1" data-alt="A clear, professional headshot of an energetic man smiling warmly. He has short dark hair and is wearing a crisp white polo shirt. The background is completely blown out to pure white, maintaining the ultra-clean, minimalist aesthetic required for small UI avatars." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCTcZEa_7rHgSNc4vulTr0UqoAtL-r9OhPZVEoG42vgvdG_wIErC6ZcWki3L593xKqOlweMk85BY-Ai4Z_qipu2XiSyOkcWVpGyv4e9g-ZsaoSwhNP81LWVctfVppfn7_rARXK939fsCj33gGu8EciX4Mdp4QMRc_ms6QbAHWfAgunYRKylQl_SQhjjj_QteTB8ylMAb3tQ3p3iL0N6DeeYk401E6BOn3I2tIKS2ZM_4LUXbsEHSSw1qZVTCWQPSF3_1I29lgTXJ6a8');"></div>
+<div class="flex flex-col gap-1">
+<span class="font-label-md text-[12px] text-on-surface-variant ml-1">Marcus T.</span>
+<div class="bg-surface-container-lowest text-on-surface p-4 rounded-2xl rounded-bl-none shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-surface-container/50">
+<p class="font-body-md text-body-md">Hey team! Are we still on for the 5 PM match at the North Pitch? I have the extra bibs.</p>
+<span class="font-label-md text-[10px] text-on-surface-variant mt-2 block text-right">2:15 PM</span>
+</div>
+</div>
+</div>
+<!-- System Event Message -->
+<div class="mx-auto text-center my-stack-sm">
+<span class="bg-surface-variant/40 px-4 py-1.5 rounded-full font-label-md text-[12px] font-semibold text-on-secondary-container flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px]">login</span>
+                Alex J. joined the match
+            </span>
+</div>
+<!-- Other User Message (Short) -->
+<div class="flex items-end gap-3 max-w-[85%] md:max-w-[70%]">
+<div class="w-8 h-8 rounded-full bg-tertiary-container bg-cover bg-center flex-shrink-0 mb-1" data-alt="A bright, cheerful profile picture of a woman with long wavy hair, smiling confidently. She is outdoors, but the background is highly blurred (bokeh effect) so the focus remains entirely on her face. The colors are vibrant and inviting, fitting a community-focused sports platform." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDEabMHeC5-wRyh13KyKp9m4yUWNq6IeebU0Cq9y2_02q-Y2324mw4qxr-SXcT4k0YhI_9G7QKU7BnhCiY3NC1q-DnXiZ4gKqZaTbhkt-IpqvGwv71Bhjgm_5gH2LX5DxJk3791xQpW46U9fjQn0utEov1OB0HuH3BXt3AzDm5jnIc75RFLwQ89yKikD9N-QM25nFNBbXu6DrDd4-kT8x0BksKiAmWo6poJdRoyimdhmCOgsGsy41GU2CYobBUoLL_74uJ9pWBmybbj');"></div>
+<div class="flex flex-col gap-1">
+<span class="font-label-md text-[12px] text-on-surface-variant ml-1">Sarah K.</span>
+<div class="bg-surface-container-lowest text-on-surface p-4 rounded-2xl rounded-bl-none shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-surface-container/50">
+<p class="font-body-md text-body-md">Yes! I'm already on my way. Traffic is light.</p>
+<span class="font-label-md text-[10px] text-on-surface-variant mt-2 block text-right">2:30 PM</span>
+</div>
+</div>
+</div>
+<!-- Current User Message (Primary Brand Color) -->
+<div class="flex items-end gap-3 justify-end max-w-[85%] md:max-w-[70%] self-end">
+<div class="flex flex-col gap-1 items-end">
+<div class="bg-primary text-on-primary p-4 rounded-2xl rounded-br-none shadow-[0_8px_30px_rgba(160,65,0,0.15)]">
+<p class="font-body-md text-body-md">Perfect. I'll bring the match ball. See you all in 20 mins!</p>
+<span class="font-label-md text-[10px] text-primary-fixed-dim mt-2 block text-right flex items-center justify-end gap-1">
+                        2:32 PM
+                        <span class="material-symbols-outlined text-[14px] fill">done_all</span>
+</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Fixed Input Bar -->
+<div class="fixed bottom-[70px] md:bottom-0 left-0 w-full bg-surface-container-lowest/90 backdrop-blur-xl border-t border-surface-container p-container-padding pb-safe z-40">
+<div class="max-w-4xl mx-auto flex items-end gap-3">
+<button class="w-12 h-12 flex-shrink-0 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[26px]">add_circle</span>
+</button>
+<div class="flex-1 relative">
+<textarea class="w-full bg-surface-container-low border-none focus:ring-0 focus:bg-surface-container-lowest text-on-surface font-body-md text-body-md rounded-2xl py-3 px-4 resize-none shadow-inner transition-colors shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]" placeholder="Type a message..." rows="1"></textarea>
+<button class="absolute right-3 bottom-2 w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">sentiment_satisfied</span>
+</button>
+</div>
+<button class="w-12 h-12 flex-shrink-0 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-[0_4px_15px_rgba(160,65,0,0.2)] hover:bg-primary-container transition-colors active:scale-90">
+<span class="material-symbols-outlined text-[22px]">send</span>
+</button>
+</div>
+</div>
+<!-- BottomNavBar (JSON Sourced) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-white dark:bg-slate-950 md:hidden border-t border-slate-100 dark:border-slate-900 shadow-[0_-4px_20px_rgba(0,0,0,0.04)] bg-white/95 dark:bg-slate-950/95 backdrop-blur-md">
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-orange-400 transition-colors active:scale-90 transition-all duration-150 group" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:-translate-y-1 transition-transform">home</span>
+<span class="font-lexend text-[10px] font-semibold tracking-wide uppercase">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-orange-400 transition-colors active:scale-90 transition-all duration-150 group" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:-translate-y-1 transition-transform">search</span>
+<span class="font-lexend text-[10px] font-semibold tracking-wide uppercase">Search</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-orange-400 transition-colors active:scale-90 transition-all duration-150 group" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:-translate-y-1 transition-transform">add_circle</span>
+<span class="font-lexend text-[10px] font-semibold tracking-wide uppercase">Create</span>
+</a>
+<!-- ACTIVE TAB: Chat -->
+<a class="flex flex-col items-center justify-center text-orange-600 dark:text-orange-500 hover:text-orange-400 transition-colors active:scale-90 transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1 fill">chat_bubble</span>
+<span class="font-lexend text-[10px] font-semibold tracking-wide uppercase text-orange-600 font-black">Chat</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-orange-400 transition-colors active:scale-90 transition-all duration-150 group" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:-translate-y-1 transition-transform">person</span>
+<span class="font-lexend text-[10px] font-semibold tracking-wide uppercase">Profile</span>
+</a>
+</nav>
+</body></html>
