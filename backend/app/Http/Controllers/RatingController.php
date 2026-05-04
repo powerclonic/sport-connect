@@ -55,6 +55,10 @@ class RatingController extends Controller
 
         $userId = $request->user()->id;
 
+        if ($data['ratee_id'] === $userId) {
+            return response()->json(['message' => 'Cannot rate yourself.'], 400);
+        }
+
         $raterParticipant = EventParticipant::where('user_id', $userId)
             ->where('event_id', $data['event_id'])
             ->where('status', 'joined')
