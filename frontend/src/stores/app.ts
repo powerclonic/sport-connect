@@ -1,15 +1,6 @@
 // Utilities
 import { defineStore } from 'pinia'
-
-type RatingItem = {
-  id: string
-  author: string
-  targetName: string
-  eventId: string
-  score: number
-  comment: string
-  createdAt: string
-}
+import { ratingsApi, type RatingResponse } from '@/api/ratings'
 
 const DEFAULT_AVATAR = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&q=80'
 
@@ -17,27 +8,8 @@ export const useAppStore = defineStore('app', {
   state: () => ({
     avatarUrl: DEFAULT_AVATAR,
     completedEventIds: ['event-football-01', 'event-basketball-01'] as string[],
-    ratingsReceived: [
-      {
-        id: 'rr-1',
-        author: 'Jamie T.',
-        targetName: 'Alex Mercer',
-        eventId: 'event-football-01',
-        score: 4.9,
-        comment: 'Great opponent. Showed up on time, played fair, and had a fantastic attitude.',
-        createdAt: '2026-04-28T10:30:00Z',
-      },
-      {
-        id: 'rr-2',
-        author: 'Marcus L.',
-        targetName: 'Alex Mercer',
-        eventId: 'event-basketball-01',
-        score: 4.8,
-        comment: 'Solid team player. Great energy and reliable communication before the match.',
-        createdAt: '2026-04-20T08:00:00Z',
-      },
-    ] as RatingItem[],
-    ratingsGiven: [] as RatingItem[],
+    ratingsReceived: [] as RatingResponse[],
+    ratingsGiven: [] as RatingResponse[],
   }),
   getters: {
     averageRating (state) {
@@ -64,14 +36,32 @@ export const useAppStore = defineStore('app', {
     canRateEvent (eventId: string) {
       return this.completedEventIds.includes(eventId) && !this.hasRatedEvent(eventId)
     },
-    submitRating (payload: Omit<RatingItem, 'id' | 'createdAt'>) {
-      const rating: RatingItem = {
-        ...payload,
-        id: `rg-${Date.now()}`,
-        createdAt: new Date().toISOString(),
+    async loadRatingsReceived () {
+      try {
+        const data = await ratingsApi.getReceived()
+        this.ratingsReceived = data
+      } catch (error) {
+        console.error('Failed to load ratings received:', error)
       }
-
-      this.ratingsGiven.unshift(rating)
+    },
+    async loadRatingsGiven () {
+      try {
+        const data = await ratingsApi.getGiven()
+        this.ratingsGiven = data
+      } catch (error) {
+        console.error('Failed to load ratings given:', error)
+      }
+    },
+    async loadAllRatings () {
+      await Promise.all([this.loadRatingsReceived(), this.loadRatingsGiven()])
+    },
+    async submitRating (payload: any) {
+      try {
+        const result = await ratingsApi.create(payload)
+        this.ratingsGiven.unshift(result)
+      } catch (error) {
+        console.error('Failed to submit rating:', error)
+      }
     },
   },
 })

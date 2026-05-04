@@ -18,6 +18,34 @@
 
       <SportsPicker v-model="selectedSports" />
 
+      <v-text-field
+        v-model.trim="location"
+        :label="t('profile.location')"
+        placeholder="e.g., Downtown"
+        type="text"
+      />
+
+      <v-text-field
+        v-model.trim="city"
+        :label="t('profile.city')"
+        placeholder="e.g., São Paulo"
+        type="text"
+      />
+
+      <v-text-field
+        v-model.trim="phone"
+        :label="t('profile.phone')"
+        placeholder="+55 11 99999-9999"
+        type="tel"
+      />
+
+      <v-textarea
+        v-model="bio"
+        :label="t('profile.bio')"
+        placeholder="Tell others about yourself"
+        rows="3"
+      />
+
       <v-btn-primary
         append-icon="mdi-arrow-right"
         class="mt-1 !h-14 !w-full !text-base !shadow-[0_10px_26px_rgba(255,107,0,0.35)] disabled:!shadow-none [font-family:var(--font-body)]"
@@ -57,6 +85,10 @@
 
   const displayName = ref(authStore.user?.display_name ?? '')
   const selectedSports = ref<string[]>([])
+  const location = ref(authStore.user?.location ?? '')
+  const city = ref(authStore.user?.city ?? '')
+  const phone = ref(authStore.user?.phone ?? '')
+  const bio = ref(authStore.user?.bio ?? '')
   const errorMessage = ref('')
 
   const canSubmit = computed(
@@ -77,7 +109,14 @@
     if (!canSubmit.value) return
     errorMessage.value = ''
     try {
-      await authStore.updateProfile(displayName.value, selectedSports.value)
+      await authStore.updateProfile(
+        displayName.value,
+        selectedSports.value,
+        location.value || undefined,
+        city.value || undefined,
+        phone.value || undefined,
+        bio.value || undefined,
+      )
       router.push('/app/feed')
     } catch (e) {
       if (e instanceof ApiError) {

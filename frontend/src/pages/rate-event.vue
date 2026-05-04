@@ -62,7 +62,19 @@
           />
         </div>
 
-        <v-btn-primary class="mt-2 !normal-case !font-semibold" @click="submit">
+        <v-alert
+          v-if="errorMessage"
+          class="mt-3"
+          color="error"
+          density="comfortable"
+          icon="mdi-alert-circle-outline"
+          variant="tonal"
+        >
+          {{ errorMessage }}
+        </v-alert>
+
+        <v-btn-primary class="mt-2 !normal-case !font-semibold" :disabled="isLoading || !targetName || !score" @click="submit">
+          <span v-if="isLoading" class="mr-2">{{ t('common.loading') }}</span>
           {{ t('rating.submit') }}
         </v-btn-primary>
       </template>
@@ -83,11 +95,13 @@
 <script setup lang="ts">
   import { computed, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
-  import { useRoute } from 'vue-router'
+  import { useRoute, useRouter } from 'vue-router'
   import AppPageIntro from '@/components/shared/AppPageIntro.vue'
   import { useAppStore } from '@/stores/app'
+  import { ratingsApi } from '@/api/ratings'
 
   const route = useRoute()
+  const router = useRouter()
   const appStore = useAppStore()
   const { t } = useI18n()
 
@@ -105,17 +119,35 @@
   const score = ref(4.5)
   const comment = ref('')
   const submitted = ref(false)
+  const errorMessage = ref('')
+  const isLoading = ref(false)
 
-  function submit () {
+  async function submit() {
     if (!canRate.value) return
+    if (!targetName.value || !score.value) return
 
-    appStore.submitRating({
-      author: 'Alex Mercer',
-      targetName: targetName.value,
-      eventId: eventId.value,
-      score: score.value,
-      comment: comment.value.trim() || t('rating.defaultComment'),
-    })
-    submitted.value = true
+    isLoading.value = true
+    errorMessage.value = ''
+    try {
+      await ratingsApi.create({
+        ratee_id: targetName.value,
+        event_id: eventId.value,
+        score: score.value,
+        comment: comment.value || undefined
+      })
+      appStore.submitRating({
+        author: 'Alex Mercer',
+        targetName: targetName.value,
+        eventId: eventId.value,
+        score: score.value,
+        comment: comment.value.trim() || t('rating.defaultComment'),
+      })
+      submitted.value = true
+      router.push('/app/profile/ratings')
+    } catch (e) {
+      errorMessage.value = 'Error submitting rating'
+    } finally {
+      isLoading.value = false
+    }
   }
 </script>

@@ -1,7 +1,8 @@
-import { computed } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { FeedEvent, OrganizerProfile } from '@/types/feed'
-import { feedEventSeeds, organizerProfiles } from '@/mocks/feed/events'
+import { organizerProfiles } from '@/mocks/feed/events'
+import { eventsApi } from '@/api/events'
 
 export function useFeedCatalog () {
   const { t } = useI18n()
@@ -14,35 +15,121 @@ export function useFeedCatalog () {
     { key: 'padel', label: 'Padel' },
   ])
 
-  const events = computed<FeedEvent[]>(() => {
-    return feedEventSeeds.map(seed => {
-      const host = organizerProfiles[seed.hostId]
+  const events = ref<FeedEvent[]>([])
 
-      return {
-        id: seed.id,
-        title: seed.title,
-        summary: seed.summary,
-        time: seed.time,
-        schedule: seed.schedule,
-        location: seed.location,
-        distance: t('feed.away', { distance: seed.distanceKm.toFixed(1) }),
-        spotsVacancies: seed.spotsVacancies,
-        spotsLabel: t('feed.spotsLabel', seed.spotsVacancies),
-        category: seed.category,
-        icon: seed.icon,
-        primaryAction: seed.primaryAction,
-        participantsCount: seed.participantsCount,
-        participantsPreview: seed.participantsPreview,
-        chatId: seed.chatId,
-        host: {
-          id: host?.id ?? seed.hostId,
-          image: host?.image ?? '',
-          name: host?.name ?? 'Organizer',
-          rating: host?.rating ?? '4.8',
-          location: host?.location ?? '',
-        },
-      }
-    })
+  async function loadEvents () {
+    try {
+      const data = await eventsApi.list()
+      events.value = data.map(e => {
+        const host = organizerProfiles[e.organizer_id]
+        const spotsVacancies = e.max_participants ? e.max_participants - e.participant_count : 0
+
+        return {
+          id: e.id,
+          title: e.title,
+          summary: e.description ?? '',
+          time: new Date(e.date_start).toLocaleTimeString(),
+          schedule: new Date(e.date_start).toLocaleDateString(),
+          location: e.location ?? e.city,
+          distance: t('feed.away', { distance: '0.0' }),
+          spotsVacancies,
+          spotsLabel: t('feed.spotsLabel', spotsVacancies),
+          category: (e.sport as any) ?? 'football',
+          icon: '⚽',
+          primaryAction: 'join',
+          participantsCount: e.participant_count,
+          participantsPreview: [],
+          chatId: `event-${e.id}`,
+          host: {
+            id: host?.id ?? e.organizer_id,
+            image: host?.image ?? '',
+            name: host?.name ?? 'Organizer',
+            rating: host?.rating ?? '4.8',
+            location: host?.location ?? e.city,
+          },
+        }
+      })
+    } catch (e) {
+      console.error('Failed to load events:', e)
+    }
+  }
+
+  async function filterByCity (city: string) {
+    try {
+      const data = await eventsApi.list(undefined, city)
+      events.value = data.map(e => {
+        const host = organizerProfiles[e.organizer_id]
+        const spotsVacancies = e.max_participants ? e.max_participants - e.participant_count : 0
+
+        return {
+          id: e.id,
+          title: e.title,
+          summary: e.description ?? '',
+          time: new Date(e.date_start).toLocaleTimeString(),
+          schedule: new Date(e.date_start).toLocaleDateString(),
+          location: e.location ?? e.city,
+          distance: t('feed.away', { distance: '0.0' }),
+          spotsVacancies,
+          spotsLabel: t('feed.spotsLabel', spotsVacancies),
+          category: (e.sport as any) ?? 'football',
+          icon: '⚽',
+          primaryAction: 'join',
+          participantsCount: e.participant_count,
+          participantsPreview: [],
+          chatId: `event-${e.id}`,
+          host: {
+            id: host?.id ?? e.organizer_id,
+            image: host?.image ?? '',
+            name: host?.name ?? 'Organizer',
+            rating: host?.rating ?? '4.8',
+            location: host?.location ?? e.city,
+          },
+        }
+      })
+    } catch (e) {
+      console.error('Failed to filter by city:', e)
+    }
+  }
+
+  async function filterBySport (sport: string) {
+    try {
+      const data = await eventsApi.list(sport)
+      events.value = data.map(e => {
+        const host = organizerProfiles[e.organizer_id]
+        const spotsVacancies = e.max_participants ? e.max_participants - e.participant_count : 0
+
+        return {
+          id: e.id,
+          title: e.title,
+          summary: e.description ?? '',
+          time: new Date(e.date_start).toLocaleTimeString(),
+          schedule: new Date(e.date_start).toLocaleDateString(),
+          location: e.location ?? e.city,
+          distance: t('feed.away', { distance: '0.0' }),
+          spotsVacancies,
+          spotsLabel: t('feed.spotsLabel', spotsVacancies),
+          category: (e.sport as any) ?? 'football',
+          icon: '⚽',
+          primaryAction: 'join',
+          participantsCount: e.participant_count,
+          participantsPreview: [],
+          chatId: `event-${e.id}`,
+          host: {
+            id: host?.id ?? e.organizer_id,
+            image: host?.image ?? '',
+            name: host?.name ?? 'Organizer',
+            rating: host?.rating ?? '4.8',
+            location: host?.location ?? e.city,
+          },
+        }
+      })
+    } catch (e) {
+      console.error('Failed to filter by sport:', e)
+    }
+  }
+
+  onMounted(() => {
+    loadEvents()
   })
 
   const organizerById = computed<Record<string, OrganizerProfile>>(() => organizerProfiles)
@@ -58,6 +145,9 @@ export function useFeedCatalog () {
   return {
     categories,
     events,
+    loadEvents,
+    filterByCity,
+    filterBySport,
     getEventById,
     getOrganizerById,
   }

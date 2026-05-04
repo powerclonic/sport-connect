@@ -121,12 +121,23 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = await authApi.me()
   }
 
-  async function updateProfile(displayName: string | null, sports: string[]): Promise<void> {
+  async function updateProfile(
+    displayName: string | null,
+    sports: string[],
+    location?: string,
+    city?: string,
+    phone?: string,
+    bio?: string,
+  ): Promise<void> {
     isLoading.value = true
     try {
       user.value = await authApi.updateProfile({
         display_name: displayName,
         sports_preferences: sports,
+        location,
+        city,
+        phone,
+        bio,
       })
     } finally {
       isLoading.value = false

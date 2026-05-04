@@ -6,9 +6,16 @@
 </template>
 
 <script setup lang="ts">
+  import { onMounted } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { useAppStore } from '@/stores/app'
   import ProfileSummaryCard from '@/components/profile/ProfileSummaryCard.vue'
   import AppPageIntro from '@/components/shared/AppPageIntro.vue'
 
   const { t } = useI18n()
+  const appStore = useAppStore()
+
+  onMounted(async () => {
+    await appStore.loadAllRatings()
+  })
 </script>

@@ -42,8 +42,9 @@
       <div class="mx-auto w-full max-w-xl rounded-3xl bg-[color-mix(in_srgb,rgb(var(--v-theme-background))_74%,transparent)] p-2 [backdrop-filter:blur(6px)] lg:max-w-2xl lg:rounded-none lg:bg-transparent lg:p-0 lg:[backdrop-filter:none]">
         <v-btn-primary
           class="pointer-events-auto !h-14 !w-full !text-base !tracking-wide disabled:!bg-[rgb(var(--v-theme-surface-variant))] disabled:!text-[rgb(var(--v-theme-on-surface-variant))] [font-family:var(--font-body)]"
-          :disabled="!canSubmit"
-          @click="handleSubmit"
+          :disabled="!canSubmit || isLoading"
+          :loading="isLoading"
+          @click="handleSubmit()"
         >
           {{ t('create.submit') }}
           <v-icon end icon="mdi-arrow-right" />
@@ -56,12 +57,15 @@
 <script setup lang="ts">
   import { computed, onMounted, ref } from 'vue'
   import { useI18n } from 'vue-i18n'
+  import { useRouter } from 'vue-router'
+  import { eventsApi } from '@/api/events'
   import CreateEventScheduleSection from '@/components/create-event/CreateEventScheduleSection.vue'
   import CreateEventSportSection from '@/components/create-event/CreateEventSportSection.vue'
   import CreateEventVisibilitySection from '@/components/create-event/CreateEventVisibilitySection.vue'
   import AppPageIntro from '@/components/shared/AppPageIntro.vue'
 
   const { t } = useI18n()
+  const router = useRouter()
 
   const sport = ref('football')
   const customSport = ref('')
@@ -71,6 +75,8 @@
   const visibility = ref<'public' | 'private'>('public')
   const recurring = ref(false)
   const attemptedSubmit = ref(false)
+  const errorMessage = ref('')
+  const isLoading = ref(false)
 
   const createPrefillStorageKey = 'sportconnect-create-prefill-v1'
 
@@ -158,8 +164,32 @@
   }
 
   function handleSubmit () {
-    attemptedSubmit.value = true
     if (!canSubmit.value) return
+    isLoading.value = true
+    errorMessage.value = ''
+    try {
+      const date_start = new Date(date.value + 'T' + time.value).toISOString()
+      const date_end = new Date(new Date(date_start).getTime() + 3600000).toISOString()
+      const payload = {
+        title: sport.value,
+        description: '',
+        sport: sport.value,
+        location: location.value,
+        city: '',
+        date_start,
+        date_end,
+        max_participants: null
+      }
+      void eventsApi.create(payload).then(() => {
+        void router.push('/app/feed')
+      }).catch(() => {
+        errorMessage.value = 'Error creating event'
+        isLoading.value = false
+      })
+    } catch (e) {
+      errorMessage.value = 'Error creating event'
+      isLoading.value = false
+    }
   }
 
   onMounted(() => {

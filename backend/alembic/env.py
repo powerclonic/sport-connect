@@ -8,8 +8,13 @@ from sqlalchemy import engine_from_config, pool
 # Import all models so Alembic can detect them
 from app.config import get_settings
 from app.models.base import Base
+from app.models.chat import Conversation, Message  # noqa: F401
+from app.models.event import Event  # noqa: F401
+from app.models.event_participant import EventParticipant  # noqa: F401
 from app.models.oauth_account import OAuthAccount  # noqa: F401
+from app.models.rating import Rating  # noqa: F401
 from app.models.user import User  # noqa: F401
+from app.models.types import JsonList  # noqa: F401
 
 config = context.config
 settings = get_settings()

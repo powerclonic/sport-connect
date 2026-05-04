@@ -226,6 +226,14 @@ def update_profile(
 ) -> UserPublicResponse:
     if body.display_name is not None:
         current_user.display_name = body.display_name
+    if body.bio is not None:
+        current_user.bio = body.bio
+    if body.location is not None:
+        current_user.location = body.location
+    if body.city is not None:
+        current_user.city = body.city
+    if body.phone is not None:
+        current_user.phone = body.phone
     current_user.sports_preferences = body.sports_preferences
     current_user.profile_complete = True
     db.commit()

@@ -48,6 +48,10 @@ class TokenResponse(BaseModel):
 
 class ProfileUpdateRequest(BaseModel):
     display_name: str | None = Field(default=None, max_length=100)
+    bio: str | None = Field(default=None, max_length=500)
+    location: str | None = Field(default=None, max_length=150)
+    city: str | None = Field(default=None, max_length=100)
+    phone: str | None = Field(default=None, max_length=20)
     sports_preferences: list[str] = Field(default_factory=list)
 
 
@@ -56,6 +60,10 @@ class UserPublicResponse(BaseModel):
     email: EmailStr
     display_name: str | None
     avatar_url: str | None
+    bio: str | None
+    location: str | None
+    city: str | None
+    phone: str | None
     is_verified: bool
     sports_preferences: list[str]
     profile_complete: bool

@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 
 from app.config import get_settings
 from app.middleware.security_headers import SecurityHeadersMiddleware
-from app.routers import auth, oauth
+from app.routers import auth, chat, events, oauth, ratings
 
 settings = get_settings()
 
@@ -50,6 +50,9 @@ def create_app() -> FastAPI:
     API_PREFIX = "/api/v1"
     app.include_router(auth.router, prefix=API_PREFIX)
     app.include_router(oauth.router, prefix=API_PREFIX)
+    app.include_router(events.router, prefix=API_PREFIX)
+    app.include_router(ratings.router, prefix=API_PREFIX)
+    app.include_router(chat.router, prefix=API_PREFIX)
 
     # ── Health check (unauthenticated) ────────────────────────────────────────
     @app.get("/health", tags=["health"])

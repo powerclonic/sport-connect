@@ -1,17 +1,16 @@
-import type { ChatGateway, ChatMessage, ChatThread } from '@/types/chat'
+import type { ChatMessage, ChatThread } from '@/types/chat'
+import { chatApi, type ConversationResponse, type MessageResponse } from '@/api/chat'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { mockChatGateway } from '@/mocks/chat/mockGateway'
 
 const CHAT_PAGE_SIZE = 30
 
 export const useChatStore = defineStore('chat', () => {
-  const gateway: ChatGateway = mockChatGateway
-
+  const conversations = ref<ConversationResponse[]>([])
   const threads = ref<ChatThread[]>([])
   const hasMoreThreads = ref(false)
   const threadsNextCursor = ref<string | null>(null)
-  const messages = ref<Record<string, ChatMessage[]>>({})
+  const messages = ref<Record<string, MessageResponse[]>>({})
   const messagesNextCursor = ref<Record<string, string | null>>({})
   const hasMoreMessages = ref<Record<string, boolean>>({})
   const hasMarkedRead = ref<Record<string, boolean>>({})
@@ -62,28 +61,25 @@ export const useChatStore = defineStore('chat', () => {
 
     isLoadingThreads.value = true
     try {
-      const page = await gateway.getThreads(CHAT_PAGE_SIZE)
-      threads.value = page.items
-      hasMoreThreads.value = page.has_more
-      threadsNextCursor.value = page.next_cursor
+      const data = await chatApi.listConversations(0, CHAT_PAGE_SIZE)
+      conversations.value = data
+      threads.value = []
     } finally {
       isLoadingThreads.value = false
     }
   }
 
   async function loadMoreThreads () {
-    if (!hasMoreThreads.value || isLoadingMoreThreads.value || !threadsNextCursor.value) {
+    if (isLoadingMoreThreads.value) {
       return
     }
 
     isLoadingMoreThreads.value = true
     try {
-      const page = await gateway.getThreads(CHAT_PAGE_SIZE, threadsNextCursor.value)
-      const knownIds = new Set(threads.value.map(thread => thread.event_id))
-      const appended = page.items.filter(thread => !knownIds.has(thread.event_id))
-      threads.value = [...threads.value, ...appended]
-      hasMoreThreads.value = page.has_more
-      threadsNextCursor.value = page.next_cursor
+      const data = await chatApi.listConversations(conversations.value.length, CHAT_PAGE_SIZE)
+      const knownIds = new Set(conversations.value.map(conv => conv.id))
+      const appended = data.filter(conv => !knownIds.has(conv.id))
+      conversations.value = [...conversations.value, ...appended]
     } finally {
       isLoadingMoreThreads.value = false
     }
@@ -94,19 +90,16 @@ export const useChatStore = defineStore('chat', () => {
     if (!messages.value[eventId]) {
       isLoadingMessages.value[eventId] = true
       try {
-        const page = await gateway.getMessages(eventId, CHAT_PAGE_SIZE)
-        messages.value[eventId] = page.items
-        messagesNextCursor.value[eventId] = page.next_cursor
-        hasMoreMessages.value[eventId] = page.has_more
+        const data = await chatApi.getConversation(eventId, 0, CHAT_PAGE_SIZE)
+        messages.value[eventId] = data.messages
+        messagesNextCursor.value[eventId] = null
+        hasMoreMessages.value[eventId] = false
       } finally {
         isLoadingMessages.value[eventId] = false
       }
     }
 
-    if (!hasMarkedRead.value[eventId]) {
-      await gateway.markRead(eventId)
-      hasMarkedRead.value[eventId] = true
-    }
+    hasMarkedRead.value[eventId] = true
     const thread = threads.value.find(t => t.event_id === eventId)
     if (thread) {
       thread.unread_count = 0
@@ -117,96 +110,51 @@ export const useChatStore = defineStore('chat', () => {
     if (isLoadingOlderMessages.value[eventId]) {
       return
     }
-    if (!hasMoreMessages.value[eventId]) {
-      return
-    }
-
-    const cursor = messagesNextCursor.value[eventId]
-    if (!cursor) {
-      return
-    }
 
     isLoadingOlderMessages.value[eventId] = true
     try {
-      const page = await gateway.getMessages(eventId, CHAT_PAGE_SIZE, cursor)
+      const skip = (messages.value[eventId] ?? []).length
+      const data = await chatApi.getConversation(eventId, skip, CHAT_PAGE_SIZE)
       const knownIds = new Set((messages.value[eventId] ?? []).map(message => message.id))
-      const olderMessages = page.items.filter(message => !knownIds.has(message.id))
+      const olderMessages = data.messages.filter(message => !knownIds.has(message.id))
       messages.value[eventId] = [...olderMessages, ...(messages.value[eventId] ?? [])]
-      messagesNextCursor.value[eventId] = page.next_cursor
-      hasMoreMessages.value[eventId] = page.has_more
     } finally {
       isLoadingOlderMessages.value[eventId] = false
     }
   }
 
   async function sendMessage (eventId: string) {
-    const content = (drafts.value[eventId] ?? '').trim()
-    if (!content) {
+    const draftText = (drafts.value[eventId] ?? '').trim()
+    if (!draftText) {
       return
-    }
-
-    const replyTo = replyingTo.value[eventId]?.id
-    const optimistic: ChatMessage = {
-      id: `optimistic-${Date.now()}`,
-      event_id: eventId,
-      sender_id: 'user-me',
-      sender: { id: 'user-me', name: 'You', isCurrentUser: true },
-      content,
-      created_at: new Date().toISOString(),
-      status: 'sending',
-      reply_to: replyingTo.value[eventId]
-        ? { id: replyingTo.value[eventId]!.id, sender: replyingTo.value[eventId]!.sender, content: replyingTo.value[eventId]!.content }
-        : undefined,
     }
 
     if (!messages.value[eventId]) {
       messages.value[eventId] = []
     }
-    messages.value[eventId].push(optimistic)
     drafts.value[eventId] = ''
     replyingTo.value[eventId] = null
 
     try {
-      const confirmed = await gateway.sendMessage(eventId, content, replyTo)
-      const idx = messages.value[eventId].findIndex(m => m.id === optimistic.id)
-      if (idx !== -1) {
-        messages.value[eventId][idx] = confirmed
-      }
-      const thread = threads.value.find(t => t.event_id === eventId)
-      if (thread) {
-        thread.last_message = { id: confirmed.id, sender: confirmed.sender, content: confirmed.content, created_at: confirmed.created_at }
-      }
+      const msg = await chatApi.sendMessage(eventId, { text: draftText })
+      messages.value[eventId].push(msg)
     } catch {
-      const idx = messages.value[eventId].findIndex(m => m.id === optimistic.id)
-      if (idx !== -1) {
-        messages.value[eventId][idx] = { ...optimistic, status: 'sending' }
-      }
+      // restore draft on failure
+      drafts.value[eventId] = draftText
     }
   }
 
   async function editMessage (eventId: string, messageId: string, content: string) {
-    const confirmed = await gateway.editMessage(eventId, messageId, content)
-    const idx = messages.value[eventId]?.findIndex(m => m.id === messageId) ?? -1
-    if (idx !== -1) {
-      messages.value[eventId][idx] = confirmed
-    }
+    // TODO: implement editMessage via chatApi
     editingMessage.value[eventId] = null
   }
 
   async function deleteMessage (eventId: string, messageId: string) {
-    await gateway.deleteMessage(eventId, messageId)
-    const msg = messages.value[eventId]?.find(m => m.id === messageId)
-    if (msg) {
-      msg.deleted_at = new Date().toISOString()
-    }
+    // TODO: implement deleteMessage via chatApi
   }
 
   async function pinMessage (eventId: string, messageId: string, pinned: boolean) {
-    await gateway.pinMessage(eventId, messageId, pinned)
-    const msg = messages.value[eventId]?.find(m => m.id === messageId)
-    if (msg) {
-      msg.pinned_at = pinned ? new Date().toISOString() : undefined
-    }
+    // TODO: implement pinMessage via chatApi
   }
 
   function setDraft (eventId: string, text: string) {

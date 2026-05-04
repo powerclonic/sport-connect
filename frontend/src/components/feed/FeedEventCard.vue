@@ -64,11 +64,22 @@
       </v-btn-ghost>
 
       <v-btn-primary
-        v-if="event.primaryAction !== 'details'"
+        v-if="event.primaryAction !== 'details' && !isJoined"
         class="max-sm:!w-full !text-sm !tracking-wide [font-family:var(--font-body)]"
-        @click.stop="emit('open-event-info')"
+        :loading="isLoading"
+        @click.stop="handleJoin"
       >
         {{ joinLabel }}
+      </v-btn-primary>
+
+      <v-btn-primary
+        v-else-if="event.primaryAction !== 'details' && isJoined"
+        class="max-sm:!w-full !text-sm !tracking-wide [font-family:var(--font-body)]"
+        :loading="isLoading"
+        @click.stop="handleLeave"
+      >
+        <v-icon left icon="mdi-check" size="18" />
+        Leave
       </v-btn-primary>
 
       <v-btn-secondary
@@ -83,7 +94,9 @@
 </template>
 
 <script setup lang="ts">
+  import { ref } from 'vue'
   import type { FeedEvent, FeedEventHost } from '@/types/feed'
+  import { eventsApi } from '@/api/events'
 
   const props = defineProps<{
     event: FeedEvent
@@ -91,12 +104,43 @@
     detailsLabel: string
   }>()
 
+  const isJoined = ref(false)
+  const isLoading = ref(false)
+
   const emit = defineEmits<{
     'open-event-info': []
     'open-organizer-profile': [organizer: FeedEventHost]
+    'joined': [eventId: string]
+    'left': [eventId: string]
   }>()
 
   function openOrganizerProfile () {
     emit('open-organizer-profile', props.event.host)
+  }
+
+  async function handleJoin () {
+    isLoading.value = true
+    try {
+      await eventsApi.join(props.event.id)
+      isJoined.value = true
+      emit('joined', props.event.id)
+    } catch (e) {
+      console.error(e)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  async function handleLeave () {
+    isLoading.value = true
+    try {
+      await eventsApi.leave(props.event.id)
+      isJoined.value = false
+      emit('left', props.event.id)
+    } catch (e) {
+      console.error(e)
+    } finally {
+      isLoading.value = false
+    }
   }
 </script>

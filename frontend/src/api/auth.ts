@@ -13,6 +13,10 @@ export interface UserPublicResponse {
   email: string
   display_name: string | null
   avatar_url: string | null
+  bio: string | null
+  location: string | null
+  city: string | null
+  phone: string | null
   is_verified: boolean
   sports_preferences: string[]
   profile_complete: boolean
@@ -32,6 +36,10 @@ export interface LoginPayload {
 
 export interface ProfileUpdatePayload {
   display_name?: string | null
+  bio?: string | null
+  location?: string | null
+  city?: string | null
+  phone?: string | null
   sports_preferences: string[]
 }
 
