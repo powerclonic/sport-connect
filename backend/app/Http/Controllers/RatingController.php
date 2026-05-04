@@ -55,7 +55,7 @@ class RatingController extends Controller
 
         $userId = $request->user()->id;
 
-        if ($data['ratee_id'] === $userId) {
+        if ((string) $data['ratee_id'] === (string) $userId) {
             return response()->json(['message' => 'Cannot rate yourself.'], 400);
         }
 
