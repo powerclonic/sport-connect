@@ -365,6 +365,9 @@
   const trayTransitionName = computed(() => isDesktop.value ? 'tray-slide-right' : 'sheet-rise')
 
   const currentPageTitle = computed(() => {
+    const path = route.path
+    if (path.includes('/profile')) return t('nav.profile')
+    if (path.includes('/events/') && path.includes('/rate')) return t('rating.title')
     const item = desktopNavItems.value.find(i => i.value === activeTab.value)
     return item?.label ?? t('app.brand')
   })
@@ -625,7 +628,7 @@
   gap: 12px;
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1145px) {
   .shell-header-row {
     justify-content: flex-start;
   }
@@ -856,7 +859,7 @@
   }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1145px) {
   .app-main {
     padding-bottom: 24px;
   }

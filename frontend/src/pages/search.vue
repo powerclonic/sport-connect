@@ -9,7 +9,7 @@
       :search-placeholder="t('feed.search')"
     />
 
-    <section class="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-3">
+    <section class="grid grid-cols-1 gap-5 lg:grid-cols-2 xxl:grid-cols-3">
       <FeedEventCard
         v-for="event in filteredEvents"
         :key="event.id"

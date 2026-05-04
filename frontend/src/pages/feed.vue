@@ -2,7 +2,7 @@
   <div class="mx-auto flex w-full max-w-xl min-w-0 flex-col gap-7 overflow-x-clip px-0 py-2 pb-safe-sm lg:max-w-7xl lg:pb-6">
     <AppPageIntro :subtitle="t('feed.subtitle')" :title="t('feed.title')" />
 
-    <section class="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-3">
+    <section class="grid grid-cols-1 gap-5 lg:grid-cols-2 xxl:grid-cols-3">
       <FeedEventCard
         v-for="event in events"
         :key="event.id"
