@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
@@ -15,7 +16,7 @@ class AuthController extends Controller
     {
         $data = $request->validate([
             'email'         => 'required|email|unique:users,email',
-            'password'      => 'required|string|min:8',
+            'password'      => ['required', 'string', Password::min(8)->mixedCase()->numbers()],
             'display_name'  => 'nullable|string|max:100',
             'sports'        => 'nullable|array',
             'sports.*'      => 'string',

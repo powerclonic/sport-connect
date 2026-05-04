@@ -3,15 +3,13 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\HealthController;
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\RatingController;
 use Illuminate\Support\Facades\Route;
 
 // Health check (unauthenticated)
-Route::get('/health', fn () => response()->json([
-    'status'  => 'ok',
-    'version' => config('app.version', '0.1.0'),
-]))->withoutMiddleware('throttle:api');
+Route::get('/health', [HealthController::class, 'check'])->withoutMiddleware('throttle:api');
 
 // Auth routes
 Route::prefix('auth')->group(function () {

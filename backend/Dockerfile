@@ -1,4 +1,4 @@
-FROM php:8.3-cli
+FROM dunglas/frankenphp:php8.3
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www
+WORKDIR /app
 
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
@@ -26,5 +26,3 @@ COPY . .
 RUN composer dump-autoload --optimize
 
 EXPOSE 5000
-
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=5000"]

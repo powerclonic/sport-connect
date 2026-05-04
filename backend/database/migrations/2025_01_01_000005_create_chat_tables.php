@@ -12,8 +12,6 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->json('participant_ids');
             $table->timestamps();
-
-            $table->index('participant_ids', 'ix_conversations_participant_ids');
         });
 
         Schema::create('messages', function (Blueprint $table) {
