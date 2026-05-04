@@ -87,8 +87,13 @@ class OAuthController extends Controller
                 return redirect(config('app.frontend_url').'/oauth/callback?error=account_inactive');
             }
         } else {
+            $email = $userInfo['email'] ?? null;
+            if (empty($email)) {
+                return redirect(config('app.frontend_url').'/oauth/callback?error=email_required');
+            }
+
             $user = User::firstOrCreate(
-                ['email' => $userInfo['email']],
+                ['email' => $email],
                 [
                     'display_name' => $userInfo['name'] ?? null,
                     'avatar_url'   => $userInfo['picture'] ?? null,

@@ -1,13 +1,16 @@
-name: Tests
+name: Backend Tests
 
 on:
   push:
     branches:
-      - master
-      - '*.x'
+      - main
+      - dev
+      - uat
+    paths:
+      - 'backend/**'
   pull_request:
-  schedule:
-    - cron: '0 0 * * *'
+    paths:
+      - 'backend/**'
 
 permissions:
   contents: read
@@ -19,13 +22,17 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.3, 8.4, 8.5]
+        php: [8.3]
 
     name: PHP ${{ matrix.php }}
 
+    defaults:
+      run:
+        working-directory: backend
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2

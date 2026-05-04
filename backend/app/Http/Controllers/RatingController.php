@@ -44,7 +44,7 @@ class RatingController extends Controller
             'event_id' => 'required|uuid|exists:events,id',
             'ratee_id' => 'required|uuid|exists:users,id',
             'score'    => 'required|numeric|min:0|max:5',
-            'comment'  => 'nullable|string',
+            'comment'  => 'nullable|string|max:500',
         ]);
 
         $event = Event::findOrFail($data['event_id']);

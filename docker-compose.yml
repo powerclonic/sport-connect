@@ -26,21 +26,25 @@ services:
   backend:
     build:
       context: ./backend
-    # Run migrations then cache config/routes and start dev server
+    # Run migrations then cache config/routes and start server
     command: >
       sh -c "php artisan migrate --force &&
              php artisan config:cache &&
              php artisan route:cache &&
-             php artisan serve --host=0.0.0.0 --port=5000"
+             frankenphp run"
     env_file:
       - .env
     environment:
       DB_HOST: mysql
       DB_PORT: 3306
       DB_CONNECTION: mysql
+      DB_DATABASE: ${MYSQL_DATABASE:-sportconnect}
+      DB_USERNAME: ${MYSQL_USER:-sportconnect}
+      DB_PASSWORD: ${MYSQL_PASSWORD:-sportconnect}
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_CLIENT: predis
+      SERVER_NAME: ":5000"
     depends_on:
       mysql:
         condition: service_healthy
@@ -49,7 +53,8 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./backend:/var/www
+      - ./backend:/app
+      - backend_vendor:/app/vendor
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/api/v1/health"]
       interval: 15s
@@ -77,3 +82,4 @@ volumes:
   mysql_data:
   redis_data:
   frontend_node_modules:
+  backend_vendor:

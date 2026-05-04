@@ -122,7 +122,7 @@ class ChatController extends Controller
         }
 
         $data = $request->validate([
-            'text' => 'required|string',
+            'text' => 'required|string|max:1000',
         ]);
 
         $message = Message::create([
