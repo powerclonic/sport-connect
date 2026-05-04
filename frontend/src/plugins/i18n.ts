@@ -32,6 +32,7 @@ const messages = {
       joinEvent: 'Join event',
       details: 'Details',
       signOut: 'Sign out',
+      defaultUserName: 'Athlete',
     },
     entry: {
       title: 'Your sports journey starts here.',
@@ -506,6 +507,7 @@ const messages = {
       joinEvent: 'Entrar no evento',
       details: 'Detalhes',
       signOut: 'Sair da conta',
+      defaultUserName: 'Atleta',
     },
     entry: {
       title: 'Sua jornada esportiva começa aqui.',

@@ -370,7 +370,7 @@
   })
 
   const userDisplayName = computed(() =>
-    authStore.user?.display_name ?? authStore.user?.email?.split('@')[0] ?? 'Athlete',
+    authStore.user?.display_name ?? authStore.user?.email?.split('@')[0] ?? t('common.defaultUserName'),
   )
   const isChatRoute = computed(() => route.path.includes('/chat'))
 
