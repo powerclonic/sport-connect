@@ -351,6 +351,10 @@
       return 'settings'
     }
 
+    if (route.path.includes('/profile') || (route.path.includes('/events/') && route.path.includes('/rate'))) {
+      return 'profile'
+    }
+
     return 'feed'
   })
 
@@ -564,7 +568,8 @@
   outline-offset: 1px;
 }
 
-.desktop-sidebar__user--active {
+.desktop-sidebar__user--active,
+.desktop-sidebar__user--active:hover {
   background: rgba(var(--v-theme-primary), 0.12);
 }
 
