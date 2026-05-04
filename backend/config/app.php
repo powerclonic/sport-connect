@@ -123,4 +123,10 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000'),
+
+    'oauth_redirect_base_url' => env('OAUTH_REDIRECT_BASE_URL', 'http://localhost:5000'),
+
+    'version' => env('APP_VERSION', '0.1.0'),
+
 ];

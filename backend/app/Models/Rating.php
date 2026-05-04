@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Rating extends Model
+{
+    use HasUuids;
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'rater_id',
+        'ratee_id',
+        'event_id',
+        'score',
+        'comment',
+        'created_at',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'score'      => 'float',
+            'created_at' => 'datetime',
+        ];
+    }
+
+    public function rater(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'rater_id');
+    }
+
+    public function ratee(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'ratee_id');
+    }
+
+    public function event(): BelongsTo
+    {
+        return $this->belongsTo(Event::class);
+    }
+}
