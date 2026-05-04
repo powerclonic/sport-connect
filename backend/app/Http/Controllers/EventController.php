@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\EventParticipant;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
@@ -80,6 +81,10 @@ class EventController extends Controller
             if ($data['date_end'] <= $data['date_start']) {
                 return response()->json(['message' => 'End date must be after start date.'], 400);
             }
+        } elseif (isset($data['date_end']) && $data['date_end'] <= $event->date_start) {
+            return response()->json(['message' => 'End date must be after start date.'], 400);
+        } elseif (isset($data['date_start']) && $event->date_end <= $data['date_start']) {
+            return response()->json(['message' => 'End date must be after start date.'], 400);
         }
 
         $event->update(array_filter($data, fn ($v) => $v !== null));
@@ -102,30 +107,35 @@ class EventController extends Controller
     // POST /events/{event}/join
     public function join(Request $request, Event $event): JsonResponse
     {
-        if ($event->status !== 'active') {
-            return response()->json(['message' => 'Cannot join inactive event.'], 400);
-        }
-
         $userId = $request->user()->id;
 
-        if (EventParticipant::where('user_id', $userId)->where('event_id', $event->id)->exists()) {
-            return response()->json(['message' => 'Already joined event.'], 400);
-        }
+        return DB::transaction(function () use ($userId, $event) {
+            // Re-fetch with a write lock to prevent race conditions on capacity checks
+            $event = Event::lockForUpdate()->findOrFail($event->id);
 
-        if ($event->max_participants) {
-            $count = EventParticipant::where('event_id', $event->id)->count();
-            if ($count >= $event->max_participants) {
-                return response()->json(['message' => 'Event is full.'], 400);
+            if ($event->status !== 'active') {
+                return response()->json(['message' => 'Cannot join inactive event.'], 400);
             }
-        }
 
-        EventParticipant::create([
-            'user_id'  => $userId,
-            'event_id' => $event->id,
-            'status'   => 'joined',
-        ]);
+            if (EventParticipant::where('user_id', $userId)->where('event_id', $event->id)->exists()) {
+                return response()->json(['message' => 'Already joined event.'], 400);
+            }
 
-        return response()->json($this->eventResponse($event));
+            if ($event->max_participants) {
+                $count = EventParticipant::where('event_id', $event->id)->count();
+                if ($count >= $event->max_participants) {
+                    return response()->json(['message' => 'Event is full.'], 400);
+                }
+            }
+
+            EventParticipant::create([
+                'user_id'  => $userId,
+                'event_id' => $event->id,
+                'status'   => 'joined',
+            ]);
+
+            return response()->json($this->eventResponse($event));
+        });
     }
 
     // DELETE /events/{event}/leave

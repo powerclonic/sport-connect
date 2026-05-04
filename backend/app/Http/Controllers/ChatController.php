@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Conversation;
 use App\Models\Message;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -15,12 +14,11 @@ class ChatController extends Controller
     {
         $userId = $request->user()->id;
 
-        $conversations = Conversation::orderByDesc('updated_at')
+        $conversations = Conversation::whereJsonContains('participant_ids', $userId)
+            ->orderByDesc('updated_at')
             ->skip($request->integer('skip', 0))
             ->take(min($request->integer('limit', 20), 100))
-            ->get()
-            ->filter(fn (Conversation $c) => in_array($userId, $c->participant_ids, true))
-            ->values();
+            ->get();
 
         return response()->json($conversations->map(function (Conversation $c) {
             return [
@@ -85,6 +83,7 @@ class ChatController extends Controller
         }
 
         $messages = $conversation->messages()
+            ->with('sender')
             ->orderByDesc('created_at')
             ->skip($request->integer('skip', 0))
             ->take(min($request->integer('limit', 50), 100))
@@ -93,7 +92,7 @@ class ChatController extends Controller
             ->values();
 
         $msgResponses = $messages->map(function (Message $msg) {
-            $sender = User::find($msg->sender_id);
+            $sender = $msg->sender;
             return [
                 'id'              => $msg->id,
                 'conversation_id' => $msg->conversation_id,

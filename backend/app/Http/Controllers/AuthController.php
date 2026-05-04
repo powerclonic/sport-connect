@@ -46,8 +46,7 @@ class AuthController extends Controller
 
         // Constant-time path: prevent user enumeration
         $user = User::where('email', $credentials['email'])->first();
-        $dummyHash = password_hash('dummy', PASSWORD_BCRYPT, ['cost' => 12]);
-        $hashToCheck = ($user && $user->password) ? $user->password : $dummyHash;
+        $hashToCheck = ($user && $user->password) ? $user->password : $this->dummyHash();
         $passwordOk = Hash::check($credentials['password'], $hashToCheck);
 
         if (! $user || ! $user->is_active || ! $passwordOk) {
@@ -57,6 +56,15 @@ class AuthController extends Controller
         $token = JWTAuth::fromUser($user);
 
         return $this->respondWithToken($token);
+    }
+
+    // Lazily-computed per-process bcrypt hash used for timing-safe login when user is not found.
+    private function dummyHash(): string
+    {
+        static $hash = null;
+        $hash ??= Hash::make('_timing_safe_dummy_');
+
+        return $hash;
     }
 
     // POST /auth/refresh

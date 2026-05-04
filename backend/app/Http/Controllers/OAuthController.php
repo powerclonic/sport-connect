@@ -40,8 +40,17 @@ class OAuthController extends Controller
             return redirect(config('app.frontend_url').'/oauth/callback?error=unsupported_provider');
         }
 
+        $error = $request->query('error');
+        if ($error) {
+            return redirect(config('app.frontend_url').'/oauth/callback?error='.urlencode((string) $error));
+        }
+
         $code  = $request->query('code');
         $state = $request->query('state');
+
+        if (! $code || ! $state) {
+            return redirect(config('app.frontend_url').'/oauth/callback?error=missing_params');
+        }
 
         $storedProvider = Cache::get("oauth_state:{$state}");
         if (! $storedProvider || $storedProvider !== $provider) {
