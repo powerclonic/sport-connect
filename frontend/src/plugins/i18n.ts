@@ -18,6 +18,7 @@ const messages = {
       chat: 'Chat',
       profile: 'Profile',
       settings: 'Settings',
+      notifications: 'Notifications',
     },
     common: {
       back: 'Back',
@@ -491,6 +492,7 @@ const messages = {
       chat: 'Chat',
       profile: 'Perfil',
       settings: 'Configurações',
+      notifications: 'Notificações',
     },
     common: {
       back: 'Voltar',
