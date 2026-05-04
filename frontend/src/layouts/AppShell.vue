@@ -26,6 +26,43 @@
           <span>{{ item.label }}</span>
         </v-btn>
       </nav>
+
+      <div class="desktop-sidebar__spacer" aria-hidden="true" />
+
+      <div class="desktop-sidebar__footer">
+        <div class="desktop-sidebar__divider" />
+
+        <v-btn
+          class="desktop-nav-btn"
+          :class="activeTray === 'notifications' ? 'desktop-nav-btn--active' : ''"
+          rounded="xl"
+          variant="text"
+          @click="toggleTray('notifications')"
+        >
+          <template #prepend>
+            <v-icon icon="mdi-bell-outline" />
+          </template>
+          <span>{{ t('nav.notifications') }}</span>
+        </v-btn>
+
+        <button
+          class="desktop-sidebar__user"
+          :class="activeTray === 'profile' ? 'desktop-sidebar__user--active' : ''"
+          @click="toggleTray('profile')"
+        >
+          <v-avatar
+            :image="authStore.user?.avatar_url ?? undefined"
+            color="primary"
+            size="34"
+          >
+            <v-icon v-if="!authStore.user?.avatar_url" icon="mdi-account" size="18" />
+          </v-avatar>
+          <div class="desktop-sidebar__user-text">
+            <span class="desktop-sidebar__user-name">{{ userDisplayName }}</span>
+            <span v-if="authStore.user?.email" class="desktop-sidebar__user-sub">{{ authStore.user.email }}</span>
+          </div>
+        </button>
+      </div>
     </aside>
 
     <div class="app-workspace" :class="isDesktop ? 'app-workspace--desktop' : ''">
@@ -37,14 +74,16 @@
       >
         <div class="shell-header-row">
           <AppBrandMark
-            :class="isDesktop ? 'brand-wordmark--desktop' : ''"
+            v-if="!isDesktop"
             :label="t('app.brand')"
             sport-tone="shell"
           />
 
+          <span v-else class="desktop-section-title">{{ currentPageTitle }}</span>
+
           <div class="header-actions">
             <v-btn
-              aria-label="Notificações"
+              :aria-label="t('nav.notifications')"
               color="primary"
               density="comfortable"
               icon="mdi-bell-outline"
@@ -54,7 +93,7 @@
             />
 
             <v-btn
-              aria-label="Perfil"
+              :aria-label="t('nav.profile')"
               color="primary"
               density="comfortable"
               icon="mdi-account-circle-outline"
@@ -312,6 +351,10 @@
       return 'settings'
     }
 
+    if (route.path.includes('/profile') || (route.path.includes('/events/') && route.path.includes('/rate'))) {
+      return 'profile'
+    }
+
     return 'feed'
   })
 
@@ -324,6 +367,18 @@
   ])
 
   const trayTransitionName = computed(() => isDesktop.value ? 'tray-slide-right' : 'sheet-rise')
+
+  const currentPageTitle = computed(() => {
+    const path = route.path
+    if (path.includes('/profile')) return t('nav.profile')
+    if (path.includes('/events/') && path.includes('/rate')) return t('rating.title')
+    const item = desktopNavItems.value.find(i => i.value === activeTab.value)
+    return item?.label ?? t('app.brand')
+  })
+
+  const userDisplayName = computed(() =>
+    authStore.user?.display_name ?? authStore.user?.email?.split('@')[0] ?? t('common.defaultUserName'),
+  )
   const isChatRoute = computed(() => route.path.includes('/chat'))
 
   function navigate (value: string) {
@@ -435,7 +490,7 @@
   top: 0;
   left: 0;
   bottom: 0;
-  width: 248px;
+  width: 280px;
   z-index: 1202;
   display: flex;
   flex-direction: column;
@@ -470,8 +525,94 @@
   background: rgba(var(--v-theme-primary), 0.12);
 }
 
+.desktop-sidebar__spacer {
+  flex: 1;
+  min-height: 8px;
+}
+
+.desktop-sidebar__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.desktop-sidebar__divider {
+  height: 1px;
+  background: color-mix(in srgb, rgb(var(--v-theme-on-surface)) 10%, transparent);
+  margin-bottom: 6px;
+}
+
+.desktop-sidebar__user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: background 0.16s ease;
+  outline: none;
+  min-height: 44px;
+}
+
+.desktop-sidebar__user:hover {
+  background: rgba(var(--v-theme-on-surface), 0.06);
+}
+
+.desktop-sidebar__user:focus-visible {
+  background: rgba(var(--v-theme-on-surface), 0.08);
+  outline: 2px solid rgba(var(--v-theme-primary), 0.6);
+  outline-offset: 1px;
+}
+
+.desktop-sidebar__user--active,
+.desktop-sidebar__user--active:hover {
+  background: rgba(var(--v-theme-primary), 0.12);
+}
+
+.desktop-sidebar__user-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.desktop-sidebar__user-name {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-body);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: rgb(var(--v-theme-on-surface));
+  line-height: 1.3;
+}
+
+.desktop-sidebar__user-sub {
+  font-size: 11px;
+  opacity: 0.6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--font-body);
+  color: rgb(var(--v-theme-on-surface));
+  line-height: 1.4;
+  margin-top: 1px;
+}
+
+.desktop-section-title {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: rgb(var(--v-theme-on-surface));
+}
+
 .app-workspace--desktop {
-  padding-left: 248px;
+  padding-left: 280px;
 }
 
 .app-bar {
@@ -490,6 +631,12 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
+}
+
+@media (min-width: 1145px) {
+  .shell-header-row {
+    justify-content: flex-start;
+  }
 }
 
 .header-actions {
@@ -718,11 +865,6 @@
 }
 
 @media (min-width: 1145px) {
-  .brand-wordmark--desktop {
-    opacity: 0;
-    pointer-events: none;
-  }
-
   .app-main {
     padding-bottom: 24px;
   }
