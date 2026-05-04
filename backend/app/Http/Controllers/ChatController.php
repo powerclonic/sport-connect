@@ -50,11 +50,9 @@ class ChatController extends Controller
         sort($participantIds);
 
         // Find existing conversation between the two participants
-        $existing = Conversation::all()->first(function (Conversation $c) use ($participantIds) {
-            $ids = $c->participant_ids;
-            sort($ids);
-            return $ids === $participantIds;
-        });
+        // Use JSON_CONTAINS to query at the database level
+        $participantJson = json_encode($participantIds);
+        $existing = Conversation::whereRaw('JSON_CONTAINS(participant_ids, ?)', [$participantJson])->first();
 
         if ($existing) {
             return response()->json([

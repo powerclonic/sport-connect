@@ -46,7 +46,7 @@ class AuthController extends Controller
 
         // Constant-time path: prevent user enumeration
         $user = User::where('email', $credentials['email'])->first();
-        $dummyHash = '$2b$12$placeholder.hash.for.timing.attack.prevention.only';
+        $dummyHash = password_hash('dummy', PASSWORD_BCRYPT, ['cost' => 12]);
         $hashToCheck = ($user && $user->password) ? $user->password : $dummyHash;
         $passwordOk = Hash::check($credentials['password'], $hashToCheck);
 
