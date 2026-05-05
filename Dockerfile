@@ -16,6 +16,8 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+ENV SERVER_NAME=":5000"
+
 WORKDIR /app
 
 COPY backend/composer.json backend/composer.lock ./
