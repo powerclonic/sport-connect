@@ -11,6 +11,8 @@ on:
   pull_request:
     paths:
       - 'backend/**'
+  release:
+    types: [published]
 
 permissions:
   contents: read
@@ -51,4 +53,4 @@ jobs:
         run: php artisan key:generate
 
       - name: Execute tests
-        run: php artisan test
+        run: XDEBUG_MODE=off php artisan test
