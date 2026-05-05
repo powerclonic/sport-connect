@@ -36,19 +36,18 @@
   const errorMessage = ref('')
 
   onMounted(async () => {
-    // Tokens are passed as URL hash fragment: #access_token=...&refresh_token=...
+    // Token is passed as URL hash fragment: #access_token=...
     const hash = window.location.hash.slice(1)
     const params = new URLSearchParams(hash)
     const accessToken = params.get('access_token')
-    const refreshToken = params.get('refresh_token')
 
-    if (!accessToken || !refreshToken) {
+    if (!accessToken) {
       errorMessage.value = t('auth.errors.serverError')
       return
     }
 
     try {
-      await authStore.hydrateFromOAuth({ access_token: accessToken, refresh_token: refreshToken })
+      await authStore.hydrateFromOAuth({ access_token: accessToken })
       // Clear tokens from URL before navigating
       history.replaceState(null, '', window.location.pathname)
       if (!authStore.user?.profile_complete) {

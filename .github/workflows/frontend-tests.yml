@@ -8,9 +8,11 @@ on:
       - uat
     paths:
       - 'frontend/**'
+      - '.github/workflows/frontend-tests.yml'
   pull_request:
     paths:
       - 'frontend/**'
+      - '.github/workflows/frontend-tests.yml'
   release:
     types: [published]
 

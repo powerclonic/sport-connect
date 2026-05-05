@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthTest extends TestCase
 {
@@ -171,5 +172,25 @@ class AuthTest extends TestCase
         $this->actingAs($user, 'api')
             ->postJson('/api/v1/auth/logout')
             ->assertStatus(204);
+    }
+
+    // ── Refresh ───────────────────────────────────────────────────────────────
+
+    public function test_user_can_refresh_token(): void
+    {
+        $user  = User::factory()->create();
+        $token = JWTAuth::fromUser($user);
+
+        $this->withHeaders(['Authorization' => "Bearer $token"])
+            ->postJson('/api/v1/auth/refresh')
+            ->assertOk()
+            ->assertJsonStructure(['access_token', 'token_type', 'expires_in']);
+    }
+
+    public function test_refresh_fails_with_invalid_token(): void
+    {
+        $this->withHeaders(['Authorization' => 'Bearer invalid.token.here'])
+            ->postJson('/api/v1/auth/refresh')
+            ->assertStatus(401);
     }
 }

@@ -7,8 +7,8 @@ import type { TokenResponse, UserPublicResponse } from '@/api/auth'
 
 const mockTokenResponse: TokenResponse = {
   access_token: 'test-access-token',
-  refresh_token: 'test-refresh-token',
   token_type: 'bearer',
+  expires_in: 3600,
 }
 
 const mockUser: UserPublicResponse = {
@@ -94,13 +94,13 @@ describe('useAuthStore', () => {
       expect(store.isLoading).toBe(false)
     })
 
-    it('should save refresh token to localStorage', async () => {
+    it('should save access token to localStorage', async () => {
       authApi.login.mockResolvedValue(mockTokenResponse)
       authApi.me.mockResolvedValue(mockUser)
 
       await store.login('test@example.com', 'password')
 
-      expect(localStorage.getItem('sc_rt')).toBe('test-refresh-token')
+      expect(localStorage.getItem('sc_at')).toBe('test-access-token')
     })
 
     it('should set isLoading to false even when login throws', async () => {
@@ -147,7 +147,7 @@ describe('useAuthStore', () => {
       expect(store.user).toBeNull()
       expect(store.accessToken).toBeNull()
       expect(store.isAuthenticated).toBe(false)
-      expect(localStorage.getItem('sc_rt')).toBeNull()
+      expect(localStorage.getItem('sc_at')).toBeNull()
     })
 
     it('should clear local state even if server logout throws', async () => {
@@ -166,21 +166,21 @@ describe('useAuthStore', () => {
   // ── Refresh ──────────────────────────────────────────────────────────────
 
   describe('refresh', () => {
-    it('should return false when no refresh token is stored', async () => {
+    it('should return false when no access token is stored', async () => {
       const result = await store.refresh()
       expect(result).toBe(false)
     })
 
-    it('should update tokens on successful refresh', async () => {
-      // Seed the store with a refresh token via login first
+    it('should update access token on successful refresh', async () => {
+      // Seed the store with an access token via login first
       authApi.login.mockResolvedValue(mockTokenResponse)
       authApi.me.mockResolvedValue(mockUser)
       await store.login('test@example.com', 'password')
 
       const newTokens: TokenResponse = {
         access_token: 'new-access-token',
-        refresh_token: 'new-refresh-token',
         token_type: 'bearer',
+        expires_in: 3600,
       }
       authApi.refresh.mockResolvedValue(newTokens)
 

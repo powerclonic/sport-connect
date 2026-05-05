@@ -177,7 +177,7 @@ XDEBUG_MODE=off php artisan test --filter=AuthTest      # Run specific test clas
 XDEBUG_MODE=off php artisan test --filter=test_login    # Run tests matching pattern
 ```
 
-Tests use SQLite in-memory via `.env.testing`. `RefreshDatabase` is used in feature tests to reset state between runs.
+Tests use SQLite in-memory; configuration lives in `phpunit.xml` (no separate `.env.testing` file is needed). `RefreshDatabase` is used in feature tests to reset state between runs.
 
 ### Key Patterns & Conventions
 
@@ -187,7 +187,7 @@ Tests use SQLite in-memory via `.env.testing`. `RefreshDatabase` is used in feat
 
 **Models**: Use Eloquent with `HasUuids` and `HasFactory` traits. Add `HasFactory` to every model that needs a factory.
 
-**Factories**: All models have factories in `database/factories/`. EventFactory has state methods: `past()`, `withCapacity(int)`, `cancelled()`.
+**Factories**: `User`, `Event`, `EventParticipant`, and `Rating` models have factories in `database/factories/`. EventFactory has state methods: `past()`, `withCapacity(int)`, `cancelled()`. (`OAuthAccount` does not have a factory.)
 
 **Security**: 
 - JWT tokens with HS256 (`JWT_SECRET`)
@@ -287,7 +287,7 @@ Local `.env` should NOT be committed. Use `.env.example` as template.
 Migrations run **during backend startup** (not as separate step in Coolify):
 ```bash
 # In docker-compose.yml (dev):
-php artisan migrate --force && php -S 0.0.0.0:5000 -t public
+php artisan migrate --force && php artisan config:cache && php artisan route:cache && frankenphp run
 ```
 For production deploys, ensure migrations are idempotent (Laravel best practice).
 

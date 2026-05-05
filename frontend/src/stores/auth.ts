@@ -4,30 +4,27 @@ import { authApi } from '@/api/auth'
 import { ApiError, configureApiAuth } from '@/api/client'
 import type { UserPublicResponse } from '@/api/auth'
 
-const REFRESH_TOKEN_KEY = 'sc_rt'
+const ACCESS_TOKEN_KEY = 'sc_at'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<UserPublicResponse | null>(null)
-  const accessToken = ref<string | null>(null)
-  const refreshToken = ref<string | null>(localStorage.getItem(REFRESH_TOKEN_KEY))
+  const accessToken = ref<string | null>(localStorage.getItem(ACCESS_TOKEN_KEY))
   const isLoading = ref(false)
 
   const isAuthenticated = computed(() => !!accessToken.value && !!user.value)
 
   // ── Internal helpers ──────────────────────────────────────────────────────
 
-  function _setTokens(tokens: { access_token: string; refresh_token: string }) {
+  function _setTokens(tokens: { access_token: string }) {
     accessToken.value = tokens.access_token
-    refreshToken.value = tokens.refresh_token
-    localStorage.setItem(REFRESH_TOKEN_KEY, tokens.refresh_token)
+    localStorage.setItem(ACCESS_TOKEN_KEY, tokens.access_token)
     _syncApiClient()
   }
 
   function _clearTokens() {
     accessToken.value = null
-    refreshToken.value = null
     user.value = null
-    localStorage.removeItem(REFRESH_TOKEN_KEY)
+    localStorage.removeItem(ACCESS_TOKEN_KEY)
     _syncApiClient()
   }
 
@@ -74,7 +71,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function logout(): Promise<void> {
     try {
-      await authApi.logout(refreshToken.value ?? undefined)
+      await authApi.logout()
     } catch {
       // Best-effort — clear local state regardless
     } finally {
@@ -83,10 +80,9 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function refresh(): Promise<boolean> {
-    const rt = refreshToken.value
-    if (!rt) return false
+    if (!accessToken.value) return false
     try {
-      const tokens = await authApi.refresh(rt)
+      const tokens = await authApi.refresh()
       _setTokens(tokens)
       return true
     } catch (e) {
@@ -97,13 +93,12 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  /** Called once on app startup to re-hydrate session from stored refresh token. */
+  /** Called once on app startup to re-hydrate session from stored access token. */
   async function initialize(): Promise<void> {
     // Always wire the API client, even if no token yet
     _syncApiClient()
 
-    const rt = refreshToken.value
-    if (!rt) return
+    if (!accessToken.value) return
 
     const ok = await refresh()
     if (ok) {
@@ -116,7 +111,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   /** Used by the OAuth callback page to store tokens received from the redirect. */
-  async function hydrateFromOAuth(tokens: { access_token: string; refresh_token: string }): Promise<void> {
+  async function hydrateFromOAuth(tokens: { access_token: string }): Promise<void> {
     _setTokens(tokens)
     user.value = await authApi.me()
   }
