@@ -1,21 +1,75 @@
 # SportConnect: Copilot Instructions
 
-SportConnect is a mobile app for discovering and joining local sporting events. The monorepo contains a Vue 3 frontend and a FastAPI backend.
+SportConnect is a mobile app for discovering and joining local sporting events. The monorepo contains a Vue 3 frontend and a Laravel PHP backend.
 
 ## General Guidelines
 
 - Follow existing code style and patterns
-- Use the appropriate package manager for each workspace (npm for frontend, uv for backend)
+- Use the appropriate package manager for each workspace (npm for frontend, Composer for backend)
 - Keep frontend code in TypeScript
+- **Follow TDD (Test-Driven Development)**: write or update tests before implementing features or fixes
+
+---
+
+## Test-Driven Development (TDD)
+
+All code changes must follow the **Red → Green → Refactor** cycle:
+
+1. **Red** — Write a failing test that describes the desired behavior
+2. **Green** — Write the minimum code necessary to make the test pass
+3. **Refactor** — Clean up the implementation while keeping all tests green
+
+### When to Apply TDD
+
+- **New features**: write feature/unit tests before writing any implementation code
+- **Bug fixes**: reproduce the bug with a failing test first, then fix it
+- **Refactoring**: ensure tests are passing before and after; do not change behavior
+
+### Backend (Laravel PHPUnit)
+
+Run tests with:
+```bash
+cd backend
+XDEBUG_MODE=off php artisan test          # all tests
+XDEBUG_MODE=off php artisan test --filter=AuthTest  # specific suite
+```
+
+Test files live in `backend/tests/`:
+- `Feature/` — HTTP feature tests using `RefreshDatabase` + `actingAs($user, 'api')`
+- `Unit/` — pure unit tests for models and isolated logic
+
+Model factories in `database/factories/` support all models. Use them in tests:
+```php
+$user = User::factory()->create();
+$event = Event::factory()->past()->create();
+```
+
+### Frontend (Vitest)
+
+Run tests with:
+```bash
+cd frontend
+npm test            # run all tests once
+npm run test:watch  # watch mode
+npm run test:coverage  # with coverage report
+```
+
+Test files live next to the code in `__tests__/` sub-directories:
+- `src/stores/__tests__/` — Pinia store tests
+- `src/api/__tests__/` — API module tests
+
+Use `vi.mock('@/api/...')` to mock API modules and `setActivePinia(createPinia())` to reset store state between tests.
+
+---
 
 ## Architecture Overview
 
 **Frontend** (`./frontend`): Vue 3 + Vite SPA with Vuetify UI components and Tailwind CSS
-**Backend** (`./backend`): FastAPI REST API with SQLAlchemy ORM, MySQL database, and Redis caching
-**Database**: MySQL with Alembic migrations
-**Auth**: JWT-based authentication with OAuth integration support
+**Backend** (`./backend`): Laravel 13 REST API with Eloquent ORM, MySQL database, and Redis caching
+**Database**: MySQL with Laravel Migrations (Eloquent)
+**Auth**: JWT-based authentication (`tymon/jwt-auth`) with OAuth integration support
 
-The backend serves the API at `/api/v1` and uses dependency injection for database sessions and configuration.
+The backend serves the API at `/api/v1` with the `auth:api` middleware guarding protected routes.
 
 ---
 
@@ -51,100 +105,94 @@ npm run preview      # Preview built app
 ## Backend Development
 
 ### Stack
-- Framework: FastAPI 0.115+
-- ORM: SQLAlchemy 2.0+
-- Database: MySQL with PyMySQL
-- Caching: Redis
-- Auth: JWT (PyJWT) + bcrypt
-- Python: 3.13+
-- Dependency Management: uv
+- Framework: Laravel 13
+- ORM: Eloquent with UUID primary keys (`HasUuids`)
+- Database: MySQL with Laravel Migrations
+- Caching: Redis (`predis/predis`)
+- Auth: JWT (`tymon/jwt-auth`) + bcrypt
+- PHP: 8.3+
+- Dependency Management: Composer
 
 ### Project Structure
 
 ```
 backend/
 ├── app/
-│   ├── main.py              # FastAPI app factory (lifespan, middleware, routers)
-│   ├── config.py            # Settings (Pydantic) - reads from .env
-│   ├── database.py          # SQLAlchemy engine, SessionLocal, get_db()
-│   ├── dependencies.py      # FastAPI Depends() helpers
-│   ├── security.py          # JWT token handling
-│   ├── redis_client.py      # Redis connection
-│   ├── models/              # SQLAlchemy models (User, OAuthAccount)
-│   ├── schemas/             # Pydantic schemas for request/response
-│   ├── routers/             # Route handlers (auth.py, oauth.py)
-│   └── middleware/          # Custom middleware (CORS, security headers, rate limiting)
-├── alembic/                 # Database migrations
-└── pyproject.toml           # Dependencies and dev tools
+│   ├── Http/
+│   │   └── Controllers/     # Route handlers (AuthController, EventController, etc.)
+│   ├── Models/              # Eloquent models (User, Event, EventParticipant, Rating, …)
+│   └── Providers/           # Service providers
+├── config/                  # Laravel config files (database, jwt, etc.)
+├── database/
+│   ├── factories/           # Model factories for testing
+│   ├── migrations/          # Database schema migrations
+│   └── seeders/             # Database seeders
+├── routes/
+│   └── api.php              # All API routes (prefixed /api/v1)
+├── tests/
+│   ├── Feature/             # HTTP feature tests
+│   └── Unit/                # Unit tests
+├── .env.testing             # Test environment config (SQLite in-memory)
+├── phpunit.xml              # PHPUnit config
+└── composer.json            # Dependencies and scripts
 ```
 
 ### Environment Setup
 
 1. Copy `.env.example` to `.env` and fill in required values:
-   - `MYSQL_PASSWORD` (required)
-   - `SECRET_KEY` (required for JWT)
-   - `REDIS_URL`, `MYSQL_*` (defaults provided)
+   - `DB_PASSWORD` (required for MySQL)
+   - `JWT_SECRET` (required for JWT)
+   - `REDIS_URL`, `DB_*` (defaults provided)
 
 2. Install dependencies:
    ```bash
    cd backend
-   uv sync              # Install all dependencies + dev tools
+   composer install
+   php artisan key:generate
+   php artisan migrate
    ```
 
 ### Running the Server
 
 ```bash
 cd backend
-uv run python -m fastapi run      # Development (auto-reload on http://127.0.0.1:8000)
-uv run python -m uvicorn app.main:app --host 0.0.0.0 --port 5000  # Production-like
+php artisan serve         # Development (http://127.0.0.1:8000)
 ```
-
-API docs available at `/docs` (Swagger) or `/redoc` in development only.
 
 ### Database Migrations
 
-Alembic manages schema changes. Configuration reads `DATABASE_URL` from `app.config.get_settings()`.
-
 ```bash
 cd backend
-uv run alembic upgrade head          # Apply all pending migrations
-uv run alembic downgrade -1          # Rollback one migration
-uv run alembic revision --autogenerate -m "descriptive message"  # Generate migration
+php artisan migrate                     # Apply all pending migrations
+php artisan migrate:rollback            # Rollback one batch
+php artisan make:migration create_example_table --create=example  # Generate migration
 ```
 
 ### Testing
 
-Run pytest with asyncio support for FastAPI async endpoints:
-
 ```bash
 cd backend
-uv run pytest                    # Run all tests
-uv run pytest tests/test_auth.py  # Run single test file
-uv run pytest -v -k "test_login"  # Run tests matching pattern
-uv run pytest --tb=short         # Shorter traceback output
+XDEBUG_MODE=off php artisan test                        # Run all tests
+XDEBUG_MODE=off php artisan test --filter=AuthTest      # Run specific test class
+XDEBUG_MODE=off php artisan test --filter=test_login    # Run tests matching pattern
 ```
+
+Tests use SQLite in-memory via `.env.testing`. `RefreshDatabase` is used in feature tests to reset state between runs.
 
 ### Key Patterns & Conventions
 
-**Dependency Injection**: Use `Depends()` for database sessions and config:
-```python
-from app.dependencies import DBSession
-async def endpoint(db: DBSession):
-    ...
-```
+**Route Protection**: Use `auth:api` middleware. Tests use `actingAs($user, 'api')`.
 
-**Async/await**: All endpoints and database queries are async-first (FastAPI with async SQLAlchemy).
+**JWT Auth**: Tokens issued with `JWTAuth::fromUser($user)`. Test authentication with `actingAs($user, 'api')`.
 
-**Settings**: Access config via `get_settings()` from `app.config`. Values come from `.env` (Pydantic BaseSettings).
+**Models**: Use Eloquent with `HasUuids` and `HasFactory` traits. Add `HasFactory` to every model that needs a factory.
 
-**Models**: Use SQLAlchemy 2.0 style with `Mapped` annotations and `mapped_column()`. Relationships use `relationship()` with `back_populates`.
-
-**Middleware Order**: CORS must be added first, then SecurityHeaders, then routers.
+**Factories**: All models have factories in `database/factories/`. EventFactory has state methods: `past()`, `withCapacity(int)`, `cancelled()`.
 
 **Security**: 
-- JWT tokens with RS256 or HS256
+- JWT tokens with HS256 (`JWT_SECRET`)
 - Passwords hashed with bcrypt
-- OAuth integration via `OAuthAccount` model with `back_populates` to User
+- OAuth integration via `OAuthAccount` model
 
 ---
 
@@ -166,9 +214,9 @@ SportConnect uses **Coolify** for containerized deployment across dev, UAT, and 
   - MySQL Database: `sportconnect_prd`
 
 **Applications** (all running and healthy):
-- `sportconnect-backend-dev` (Docker, Python 3.13 + FastAPI)
-- `sportconnect-backend-uat` (Docker, Python 3.13 + FastAPI)
-- `sportconnect-backend-prd` (Docker, Python 3.13 + FastAPI)
+- `sportconnect-backend-dev` (Docker, PHP 8.3 + Laravel + FrankenPHP)
+- `sportconnect-backend-uat` (Docker, PHP 8.3 + Laravel + FrankenPHP)
+- `sportconnect-backend-prd` (Docker, PHP 8.3 + Laravel + FrankenPHP)
 - `sportconnect-frontend-dev` (Nixpacks build, Vue 3 SPA via Node.js)
 - `sportconnect-frontend-uat` (Nixpacks build, Vue 3 SPA via Node.js)
 - `sportconnect-frontend-prd` (Nixpacks build, Vue 3 SPA via Node.js)
@@ -213,12 +261,11 @@ FROM node:22-alpine
 ### Environment Variables
 
 Backend environment variables are injected by Coolify at runtime:
-- `SECRET_KEY` — JWT signing key (dev-specific value in dev env)
-- `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_DATABASE`, `MYSQL_USER`, `MYSQL_PASSWORD`
+- `JWT_SECRET` — JWT signing key (dev-specific value in dev env)
+- `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`
 - `REDIS_URL` — Redis connection (managed by Coolify)
 - `ALLOWED_ORIGINS` — CORS whitelist (set per environment)
-- `HTTPS` — Set to `true` for production (enforces HTTPS URLs)
-- `APP_ENV` — `development`, `staging`, or `production`
+- `APP_ENV` — `local`, `staging`, or `production`
 - OAuth credentials (if configured)
 
 Local `.env` should NOT be committed. Use `.env.example` as template.
@@ -240,9 +287,9 @@ Local `.env` should NOT be committed. Use `.env.example` as template.
 Migrations run **during backend startup** (not as separate step in Coolify):
 ```bash
 # In docker-compose.yml (dev):
-uv run alembic upgrade head && uv run fastapi dev app/main.py
+php artisan migrate --force && php -S 0.0.0.0:5000 -t public
 ```
-For production deploys, ensure migrations are idempotent (Alembic best practice).
+For production deploys, ensure migrations are idempotent (Laravel best practice).
 
 ### Testing Changes Before Production
 
@@ -266,7 +313,7 @@ Available tools for deployment operations:
 
 ## Using MCP for Documentation
 
-Use Context7 MCP to fetch current docs for libraries, frameworks, and SDKs (FastAPI, SQLAlchemy, etc.) — even if you think you know the answer. This ensures you have the latest syntax and features.
+Use Context7 MCP to fetch current docs for libraries, frameworks, and SDKs (Laravel, Eloquent, Vue, etc.) — even if you think you know the answer. This ensures you have the latest syntax and features.
 
 **Exception:** For Vuetify questions, use the Vuetify MCP instead.
 
