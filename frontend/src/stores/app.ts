@@ -31,7 +31,7 @@ export const useAppStore = defineStore('app', {
       this.avatarUrl = DEFAULT_AVATAR
     },
     hasRatedEvent (eventId: string) {
-      return this.ratingsGiven.some(item => item.eventId === eventId)
+      return this.ratingsGiven.some(item => item.event_id === eventId)
     },
     canRateEvent (eventId: string) {
       return this.completedEventIds.includes(eventId) && !this.hasRatedEvent(eventId)

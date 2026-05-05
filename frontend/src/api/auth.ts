@@ -4,8 +4,8 @@ import { api } from './client'
 
 export interface TokenResponse {
   access_token: string
-  refresh_token: string
   token_type: string
+  expires_in: number
 }
 
 export interface UserPublicResponse {
@@ -52,11 +52,11 @@ export const authApi = {
   login: (payload: LoginPayload) =>
     api.post<TokenResponse>('/auth/login', payload),
 
-  refresh: (refreshToken: string) =>
-    api.post<TokenResponse>('/auth/refresh', { refresh_token: refreshToken }, { skipRefresh: true }),
+  refresh: () =>
+    api.post<TokenResponse>('/auth/refresh', undefined, { skipRefresh: true }),
 
-  logout: (refreshToken?: string) =>
-    api.post<void>('/auth/logout', { refresh_token: refreshToken }),
+  logout: () =>
+    api.post<void>('/auth/logout'),
 
   me: () =>
     api.get<UserPublicResponse>('/auth/me'),
